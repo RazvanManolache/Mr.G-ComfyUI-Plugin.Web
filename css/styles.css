@@ -1,0 +1,35 @@
+.fa-gear:before,
+.fa-cog:before {
+    content: "\f013" !important;
+}
+
+.fa-gears:before,
+.fa-cogs:before {
+    content: "\f085" !important;
+}
+
+.fa-gears{
+    width: unset !important
+}
+
+.fa-pencil:before {
+    content: "\f040" !important;
+}
+
+.fa-copy:before,
+.fa-files-o:before {
+    content: "\f0c5" !important;
+}
+
+.x-textareafield .x-body-wrap-el {  
+    height: unset !important;
+}
+
+.x-boundlist-selected {
+    display: none;
+}
+
+/*#ext-viewport:after {
+    content: ' ' !important;
+}*/
+
