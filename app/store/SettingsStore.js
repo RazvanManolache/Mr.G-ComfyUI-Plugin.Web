@@ -8,6 +8,10 @@ Ext.define('MrG.store.SettingsStore', {
     storeId: 'MrG.store.SettingsStore',
     autoLoad: true,
     dataLoadedFirstTime: false,
+    // proxy: {
+    //     type: 'ODataProxy',
+    //     queryable: newContext().Settings
+    // },
     listeners: {
         load: function (store, records, successful, operation, eOpts) {
             if (!this.dataLoadedFirstTime) {

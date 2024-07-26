@@ -1,16 +1,16 @@
-Ext.define('MrG.store.JobsStore', {
+Ext.define('MrG.store.PackagesRepositoryStore', {
     extend: 'MrG.base.store.BaseStore',
-    model: 'MrG.model.JobsModel',
+    model: 'MrG.model.PackageRepositoryModel',
     proxy: {
        type: 'rest',
-       url: '/mrg/jobs',
+       url: '/mrg/package',
        reader: {
            type: 'json',
        }
     },
     // proxy: {
     //     type: 'ODataProxy',
-    //     queryable: newContext().Jobs
+    //     queryable: newContext().PackageRepository
     // },
     autoLoad: true
 });

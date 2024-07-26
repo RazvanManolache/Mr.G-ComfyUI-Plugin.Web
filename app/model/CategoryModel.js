@@ -20,13 +20,17 @@ Ext.define('MrG.model.CategoryModel', {
        
     ],
     storeIdStart: 'categoriesStore_',
+    // proxy: {
+    //     type: 'ODataProxy',
+    //     queryable: newContext().Categories
+    // },
     proxy: {
-        type: 'rest',
-        appendId: false,
-        noCache: false,
-        url: '/mrg/categories',
-        writer: {
-            writeAllFields: true
-        }
+       type: 'rest',
+       appendId: false,
+       noCache: false,
+       url: '/mrg/categories',
+       writer: {
+           writeAllFields: true
+       }
     },
 });
