@@ -124,7 +124,10 @@ blocksInterpreter = {
                 }
 			}
 			var outField = me.createField(name, [output, "output", idx], formName);
-			form_items.push(outField);
+			if (outField)
+				form_items.push(outField);
+			else 
+				console.log("out field not created", name, output, idx, names);
 		});
 		form_items = form_items.sort((a, b) => {
 			return a.order - b.order
@@ -278,6 +281,10 @@ blocksInterpreter = {
 				case "CLIP":
 				case "MASK":
 				case "MODEL":
+				case "GUIDER":
+				case "NOISE":
+				case "AUDIO":
+				case "PHOTOMAKER":
 				case "LATENT":
 				case "SIGMAS":
 				case "UPSCALE_MODEL":
