@@ -166,13 +166,16 @@ blocksInterpreter = {
 		else {
 			store_nm = nodeType + "_" + store_nm;
 		}
-			
+		var data = [];
 		if (!storeConfig) {
 			console.warn("don't have data for node " + nodeType + " - field " + fieldname + " - if you use this node you will have issues - most likely it's a custom node which is not supported.")
 			//console.log('ComfyTypeMapping("' + fieldname + '","' + nodeType + '", 1, "nodes.' + nodeType + '.' + fieldname + '"),')
 			//console.log(nodeType, fieldname, configs.length, configs, storeConfig);
 		}
-		data = storeConfig.get("db_data");
+		else {
+			data = storeConfig.get("db_data");
+		}
+		
 		var storename = 'MrG.store.combo.singleton.' + store_nm;
 		if (!MrG || !MrG.store || !MrG.store.combo || !MrG.store.combo.singleton || !MrG.store.combo.singleton[store_nm]) {
 			//console.log(storename);
