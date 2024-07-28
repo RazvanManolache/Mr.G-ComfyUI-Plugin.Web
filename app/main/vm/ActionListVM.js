@@ -11,9 +11,7 @@ Ext.define('MrG.main.vm.ActionListVM', {
        
         categoriesCollapsed: false,
         categoriesWidth: 250,
-        optionsPressed: false,
-        apisPressed: true,
-        jobsPressed: false,
+       
     },
     formulas: {
        

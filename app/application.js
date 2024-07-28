@@ -13,6 +13,11 @@ function startUI() {
 			'MrG.main.view.ActionListV',
 			'MrG.main.ctrl.ActionListC',
 			'MrG.main.vm.ActionListVM',
+
+			'MrG.main.view.ActionPanelV',
+			'MrG.main.ctrl.ActionPanelC',
+			'MrG.main.vm.ActionPanelVM',
+
 			
 			'MrG.dialog.view.SelectNodeV',
 			'MrG.dialog.ctrl.SelectNodeC',
@@ -95,7 +100,9 @@ function startUI() {
 			'MrG.grd.act.view.JobsGridV',
 			'MrG.grd.act.vm.JobsGridVM',
 			'MrG.grd.act.ctrl.JobsGridC',
-				
+			'MrG.grd.act.view.SettingsGridV',
+			'MrG.grd.act.vm.SettingsGridVM',
+			'MrG.grd.act.ctrl.SettingsGridC',
 
 			
 			'MrG.base.view.BaseNodeV',

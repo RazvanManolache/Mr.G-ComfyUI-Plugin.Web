@@ -23,7 +23,13 @@ Ext.define('MrG.main.ctrl.ActionListC', {
 		Ext.StoreMgr.register(jobsStore);
 
 		//this.vm.bind("{searchText}", function (val) { console.log(val) }, this);
-		
+
+		this.extraMenuItems.forEach(function (group) {
+			this.addMenuGroup(group);
+			group.items.forEach(function (item) {
+				this.addMenuItem(group.title, item);
+			}, this);
+		}, this);
 	},	
 
 	// #region Categories
@@ -244,44 +250,100 @@ Ext.define('MrG.main.ctrl.ActionListC', {
 		this.lookup("rightMenu").setActiveItem(this.lookup('workflowGrid'));
 		this.set("actionTitle", "Workflows");
 	},
-	onSettingsExpand: function () {
-		if (this.get("apisPressed")) {
-			this.lookup("rightMenu").setActiveItem(this.lookup('apiGrid'));
-			this.set("actionTitle", "APIs")
-		}
-			
-		if (this.get("jobsPressed")) {
-			this.lookup("rightMenu").setActiveItem(this.lookup('jobsGrid'));
-			this.set("actionTitle", "Jobs")
-		}
-			
-		console.log(arguments);
+	onOtherMenuExpand: function (menu) {
+		var title = menu.getTitle();
+		var rightMenu = this.lookup("rightMenu");
+		var reference = this.getActionPanelReference(title);
+		rightMenu.setActiveItem(this.lookup(reference));
 	},
-	onQueueExpand: function () {
-		console.log(arguments);
+	setActiveItem: function (reference, title) {
+		this.lookup("rightMenu").setActiveItem(this.lookup(reference));
+		this.set("actionTitle", title)
 	},
-	onToolsExpand: function () {
-		console.log(arguments);
-	},
-	onOptionsClick: function () {
-		this.set("optionsPressed", true);
-        this.set("apisPressed", false);
-		this.set("jobsPressed", false);		
-		this.onSettingsExpand();
-	},
-	onApisClick: function () {
-        this.set("optionsPressed", false);
-        this.set("apisPressed", true);
-		this.set("jobsPressed", false);
-		this.onSettingsExpand();
-	},
-	onJobsClick: function () {
-        this.set("optionsPressed", false);
-        this.set("apisPressed", false);
-		this.set("jobsPressed", true);
-		this.onSettingsExpand();
-    },
 	
+	extraMenuItems: [
+		{
+			title: 'Settings',
+			items: [
+				{
+					title: 'Settings',
+					xclass: 'MrG.grd.act.view.SettingsGridV'
+				},
+				{
+					title: 'APIs',
+					xclass: 'MrG.grd.act.view.ApiGridV'
+				},
+				{
+					title: 'Jobs',
+					xclass: 'MrG.grd.act.view.JobsGridV'
+				}
+			]
+		}
+	],
+
+	getActionPanelReference: function (name) {
+		return name + "_ActionPanel";
+	},
+	getMenuGroupReference: function (name) {
+		return name + "_MenuGroup";
+	},
+	getMenuGroupItemReference: function (groupName, name) {
+		return groupName + "_" + name + "_MenuItem";
+	},
+	addMenuGroup: function (group) {
+		var name = group.title;
+		var reference = this.getMenuGroupReference(name);
+		var menuGroup = this.lookup(reference);
+		if (!menuGroup) {
+			menuGroup = {
+				xtype: 'panel',
+				reference: reference,
+				title: name,
+				listeners: {
+					expand: 'onOtherMenuExpand'
+				},
+                items: []
+			}
+			menuGroup = this.lookup("menuPanel").add(menuGroup);
+		}
+		var referencePanel = this.getActionPanelReference(name);
+		var actionPanel = this.lookup(referencePanel);
+		if (!actionPanel) {
+			actionPanel = {
+				xclass: 'MrG.main.view.ActionPanelV',
+                reference: referencePanel,
+                title: name,
+            }
+            actionPanel = this.lookup("rightMenu").add(actionPanel);
+		}
+		
+		return menuGroup;
+	},
+	addMenuItem: function (groupName, item) {
+		var reference = this.getMenuGroupItemReference(groupName, item.title);
+		var menuItem = this.lookup(reference);
+		if (!menuItem) {
+            var menuGroup = this.lookup(this.getMenuGroupReference(groupName));
+            menuItem = {
+				xtype: 'button',
+				width: '100%',
+                text: item.title,
+                reference: reference,
+                handler: 'onMenuItemClick',
+            }
+            menuItem = menuGroup.add(menuItem);
+		}
+		var referencePanel = this.getActionPanelReference(groupName);
+		var actionPanel = this.lookup(referencePanel);
+		actionPanel.getController().addSubPanel(item.title, item.xclass);
+
+	},
+	onMenuItemClick: function (btn) {
+		var groupName = btn.up().getTitle();
+		var referencePanel = this.getActionPanelReference(groupName);
+		var actionPanel = this.lookup(referencePanel);
+		actionPanel.getController().setActiveSubPanel(btn.getText());
+    },
 	openWorkflowInternal: function (workflow) {
 		if (!workflow) return;
 		var focusOnNewTab = this.vm.get("focusOnNewTab");

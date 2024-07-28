@@ -1,6 +1,6 @@
-Ext.define('MrG.store.QueueStepStore', {
+Ext.define('MrG.store.BatchStepStore', {
     extend: 'MrG.base.store.BaseMemoryStore',
-    model: 'MrG.model.QueueStepModel',
+    model: 'MrG.model.BatchStepModel',
     sorters: 'alias',
     proxy: {
         type: 'memory',

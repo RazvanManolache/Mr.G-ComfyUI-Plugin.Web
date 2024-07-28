@@ -1,26 +1,29 @@
 Ext.define('MrG.base.ctrl.BaseActionGridC', {
 	extend: 'MrG.base.ctrl.BaseC',
 	getGridItemStore() {
-		var type = this.get("typeGrid");
+		var type = this.getTypeGrid();
 		var store = this.get(type + 'Store');
 		if(!store){
             return this.get('emptyStore');
 		}
 		return store;
 	},
+	getTypeGrid: function () {
+		return this.get("typeGrid");
+    },
 	openGridItem: function () {
 		if(this.get("selectionMode")) return;
 		var gridItem = this.get("selectedGridItem");
-		var type = this.get("typeGrid");
+		var type = this.getTypeGrid();
 		this.view.fireEventArgs("openGridItem", [type, gridItem]);
 	},
 	newGridItem: function () {
-		var type = this.get("typeGrid");
+		var type = this.getTypeGrid();
 		this.view.fireEventArgs("newGridItem", [type]);
     
 	},
 	openFileGridItem: function () {
-		var type = this.get("typeGrid");
+		var type = this.getTypeGrid();
 		this.view.fireEventArgs("openFileGridItem", [type]);
 	},
 	searchValueChanged: function (ctrl, val) {

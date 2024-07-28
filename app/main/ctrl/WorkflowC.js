@@ -1072,7 +1072,7 @@ Ext.define('MrG.main.ctrl.WorkflowC', {
 	},
 	processMrgPromptResponse: function (response) {
 		if (response.success == "OK") {
-			this.set("latestQueuedRun", response.run_uuid);
+			this.set("latestQueuedRun", response.batch_request_uuid);
 			if (response.changes) {
 				for (var nodeId in response.changes) {
 					changes = response.changes[nodeId];

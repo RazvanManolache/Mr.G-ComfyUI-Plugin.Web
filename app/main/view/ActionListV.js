@@ -177,57 +177,7 @@
 								},]
 						},
 
-						{
-							title: 'Queue',
-							//TODO: make queue
-							html: '//TODO',
-							listeners: {
-								expand: 'onQueueExpand'
-							},
-						},
-						{
-							title: 'Tools',
-							//TODO: make queue
-							html: '//TODO',
-							listeners: {
-								expand: 'onToolsExpand'
-							},
-						},
-						{
-							title: 'Settings',
-
-							listeners: {
-								expand: 'onSettingsExpand'
-							},
-							layout: 'vbox',
-							items: [
-								{
-									//TODO: make settings
-									xtype: 'button',
-									text: 'Options',
-									handler: 'onOptionsClick',
-									bind: {
-										pressed: '{optionsPressed}'
-									}
-								},
-								{
-									xtype: 'button',
-									text: 'APIs',
-									handler: 'onApisClick',
-									bind: {
-										pressed: '{apisPressed}'
-									}
-								},
-								{
-									xtype: 'button',
-									text: 'Jobs',
-									handler: 'onJobsClick',
-									bind: {
-										pressed: '{jobsPressed}'
-									}
-								}
-							]
-						}
+						
 					]
 
 				},
@@ -305,26 +255,8 @@
 						openFileGridItem: 'openFileGridItem',
 					}
 				},
-				{
-					title: 'Jobs',
-					xclass: 'MrG.grd.act.view.JobsGridV',
-					reference: 'jobsGrid',
-					listeners: {
-						openGridItem: 'openGridItem',
-						newGridItem: 'newGridItem',
-						openFileGridItem: 'openFileGridItem',
-					}
-				},
-				{
-					title: 'APIs',
-					xclass: 'MrG.grd.act.view.ApiGridV',
-					reference: 'apiGrid',
-					listeners: {
-						openGridItem: 'openGridItem',
-						newGridItem: 'newGridItem',
-						openFileGridItem: 'openFileGridItem',
-					}
-				}
+				
+				
 			]
 
 

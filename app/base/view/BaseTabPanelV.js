@@ -1,6 +1,6 @@
 ﻿Ext.define('MrG.base.view.BaseTabPanelV', {
 	extend: 'Ext.tab.Panel',
-	layout: 'hbox',
+	layout: 'card',
 	viewModel: {
 		xclass: 'MrG.base.vm.BaseTabPanelVM'
 	},

@@ -123,7 +123,7 @@
         'Package': { 'type': nameSpace + 'Packages', 'inverseProperty': 'Workflows' }, // Workflows Package PackageUuid - Packages Packages Uuid 		
         'CategoryUuid': { 'type': 'Edm.String' },
         'Category': { 'type': nameSpace + 'Categories', 'inverseProperty': 'Workflows' }, // Workflows Category CategoryUuid - Categories Categories Uuid 		
-        'QueueRuns': { 'type': $data.EntitySet, 'elementType': nameSpace + 'QueueRuns' },
+        'BatchRequests': { 'type': $data.EntitySet, 'elementType': nameSpace + 'BatchRequests' },
 
     });
     
@@ -139,12 +139,12 @@
         'Error': { 'type': 'Edm.String' },
         'StartDate': { 'type': 'Edm.DateTime' },
         'EndDate': { 'type': 'Edm.DateTime' },
-        'QueuedRun': { 'type': nameSpace + 'QueueRuns', 'inverseProperty': 'QueueSteps' }, // QueueSteps QueuedRun QueuedRunUuid - QueueRuns QueueRuns Uuid 		
+        'QueuedRun': { 'type': nameSpace + 'BatchRequests', 'inverseProperty': 'QueueSteps' }, // QueueSteps QueuedRun QueuedRunUuid - BatchRequests BatchRequests Uuid 		
         'Outputs': { 'type': $data.EntitySet, 'elementType': nameSpace + 'Outputs' },
     });
 
 
-    $data.Entities.BaseModel.extend(nameSpace + 'QueueRuns', {
+    $data.Entities.BaseModel.extend(nameSpace + 'BatchRequests', {
         'WorkflowUuid': { 'type': 'Edm.String' },
         'ApiUuid': { 'type': 'Edm.String' },
         'JobUuid': { 'type': 'Edm.String' },
@@ -162,9 +162,9 @@
         'NodesValues': { 'type': 'Edm.String' },
         'RunValues': { 'type': 'Edm.String' },
         'CurrentValues': { 'type': 'Edm.String' },
-        'Workflow': { 'type': nameSpace + 'Workflows', 'inverseProperty': 'QueueRuns' }, // QueueRuns Workflow WorkflowUuid - Workflows Workflows Uuid 		
-        'Api': { 'type': nameSpace + 'Api', 'inverseProperty': 'QueueRuns' }, // QueueRuns Api ApiUuid - Api Api Uuid 		
-        'Job': { 'type': nameSpace + 'Jobs', 'inverseProperty': 'QueueRuns' }, // QueueRuns Job JobUuid - Jobs Jobs Uuid 		
+        'Workflow': { 'type': nameSpace + 'Workflows', 'inverseProperty': 'BatchRequests' }, // BatchRequests Workflow WorkflowUuid - Workflows Workflows Uuid 		
+        'Api': { 'type': nameSpace + 'Api', 'inverseProperty': 'BatchRequests' }, // BatchRequests Api ApiUuid - Api Api Uuid 		
+        'Job': { 'type': nameSpace + 'Jobs', 'inverseProperty': 'BatchRequests' }, // BatchRequests Job JobUuid - Jobs Jobs Uuid 		
         'QueueSteps': { 'type': $data.EntitySet, 'elementType': nameSpace + 'QueueSteps' },
     });
 
@@ -209,7 +209,7 @@
     $data.Entities.WorkflowExtenders.extend(nameSpace + 'Jobs', {
         'Cron': { 'nullable': false, 'required': true, 'type': 'Edm.String' },
         'Package': { 'type': nameSpace + 'Packages', 'inverseProperty': 'Jobs' }, // Jobs Package PackageUuid - Packages Packages Uuid 		
-        'QueueRuns': { 'type': $data.EntitySet, 'elementType': nameSpace + 'QueueRuns' },
+        'BatchRequests': { 'type': $data.EntitySet, 'elementType': nameSpace + 'BatchRequests' },
     });
 
 
@@ -217,7 +217,7 @@
         'Endpoint': { 'nullable': false, 'required': true, 'type': 'Edm.String' },
         'Parameters': { 'type': 'Edm.String' },
         'Package': { 'type': nameSpace + 'Packages', 'inverseProperty': 'Apis' }, // Api Package PackageUuid - Packages Packages Uuid 		
-        'QueueRuns': { 'type': $data.EntitySet, 'elementType': nameSpace + 'QueueRuns' },
+        'BatchRequests': { 'type': $data.EntitySet, 'elementType': nameSpace + 'BatchRequests' },
     });
 
 
@@ -250,7 +250,7 @@
         'NamedPackageObject': { type: $data.EntitySet, elementType: $data.Entities.NamedPackageObject },
         'Settings': { type: $data.EntitySet, elementType: $data.Entities.Settings },
         'OutputLinks': { type: $data.EntitySet, elementType: $data.Entities.OutputLinks },
-        'QueueRuns': { type: $data.EntitySet, elementType: $data.Entities.QueueRuns },
+        'BatchRequests': { type: $data.EntitySet, elementType: $data.Entities.BatchRequests },
         'QueueSteps': { type: $data.EntitySet, elementType: $data.Entities.QueueSteps },
         'Workflows': { type: $data.EntitySet, elementType: $data.Entities.Workflows },
         'Categories': { type: $data.EntitySet, elementType: $data.Entities.Categories },

@@ -1,4 +1,4 @@
-Ext.define('MrG.model.QueueRunModel', {
+Ext.define('MrG.model.BatchRequestModel', {
     extend: 'MrG.model.NamedObjectModel',
 
     fields: [
@@ -22,6 +22,6 @@ Ext.define('MrG.model.QueueRunModel', {
        
     ],
  
-    storeIdStart: 'queueRunStore_',
+    storeIdStart: 'batchRequestStore_',
 
 });

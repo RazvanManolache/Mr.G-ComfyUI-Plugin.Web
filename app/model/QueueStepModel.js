@@ -1,7 +1,7 @@
-Ext.define('MrG.model.QueueStepModel', {
+Ext.define('MrG.model.BatchStepModel', {
     extend: 'MrG.base.model.BaseModel',
     fields: [       
-        { name: 'queued_run_uuid', type: 'string', allowNull: true },
+        { name: 'batch_request_uuid', type: 'string', allowNull: true },
         { name: 'run_value', type: 'string', allowNull: false },
         { name: 'status', type: 'string', allowNull: false },
         { name: 'step', type: 'int', allowNull: false },
