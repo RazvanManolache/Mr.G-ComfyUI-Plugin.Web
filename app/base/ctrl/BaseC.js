@@ -45,6 +45,8 @@ Ext.define('MrG.base.ctrl.BaseC', {
 		"nodeFieldSequenceChanged", "sequenceChanged",
 		//field changed is used for getting list of all fields, this is now used to generate content for preset tags and descriptions
 		"nodeFieldChanged", "fieldChanged",
+		// navigational events
+		"activeNavigationItemChanged",
 		//these are used to notify comfy of value changes
 		"nodeFieldValueChanged", "fieldValueChanged",
 		//these just reflect what the field is throwing, already see those

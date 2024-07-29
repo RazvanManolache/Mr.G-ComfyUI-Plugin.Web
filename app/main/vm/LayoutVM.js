@@ -22,15 +22,13 @@ Ext.define('MrG.main.vm.LayoutVM', {
 
                         store: 'MrG.store.OutputStore',
                         storeName: 'outputStore',
-                        storeSingleton: true
                     },
                     {
                         title: 'Queue',
                         xclass: 'MrG.grd.act.view.QueueGridV',
 
-                        store: 'MrG.store.QueueStore',
-                        storeName: 'queueStore',
-                        storeSingleton: true
+                        store: 'MrG.store.BatchRequestStore',
+                        storeName: 'requestStore',
                     },
                 ]
             },
@@ -41,14 +39,14 @@ Ext.define('MrG.main.vm.LayoutVM', {
                         title: 'Installed packages',
                         xclass: 'MrG.grd.act.view.PackagesGridV',
 
-                        store: 'MrG.store.PackagesStore',
+                        store: 'MrG.store.InstalledPackagesStore',
                         storeName: 'installedPackagesStore',
                     },
                     {
                         title: 'Available packages',
                         xclass: 'MrG.grd.act.view.PackagesGridV',
 
-                        store: 'MrG.store.PackagesStore',
+                        store: 'MrG.store.AvailablePackagesStore',
                         storeName: 'availablePackagesStore',
                     },
                     {

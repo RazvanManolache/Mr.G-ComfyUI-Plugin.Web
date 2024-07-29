@@ -3,9 +3,5 @@ Ext.define('MrG.grd.act.vm.PackagesGridVM', {
     data: {
         typeGrid: 'packages',
     },
-    stores: {
-        packagesStore: {
-            xclass :'MrG.store.PackagesStore'
-        }
-    }
+   
 });

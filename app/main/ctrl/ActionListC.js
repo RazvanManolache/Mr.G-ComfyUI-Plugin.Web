@@ -495,9 +495,8 @@ Ext.define('MrG.main.ctrl.ActionListC', {
 	
 	workflowStoreDataLoaded: false,
 	workflowStoreDataChanged: function (store) {
-		store.getData().items.filter(a=>a.dirty).forEach(a=>a.save());
-		if (store.getTotalCount() > 0)
-			this.workflowStoreDataLoaded = true;
+		store.getData().items.filter(a => a.dirty).forEach(a => a.save());
+		this.workflowStoreDataLoaded = true;
 		this.checkAllStoresLoaded();
 	},
 	genericStoreDataChanged: function (store) {

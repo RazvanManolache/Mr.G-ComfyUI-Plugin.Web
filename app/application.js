@@ -25,6 +25,8 @@ function startUI() {
 
 			'MrG.model.ApiModel',
 			'MrG.model.JobsModel',
+			'MrG.model.OutputModel',
+			'MrG.model.BatchRequestModel',
 			'MrG.model.RunModeModel',
 			'MrG.model.ConnectorModel',
 			'MrG.model.SelectListModel',
@@ -47,11 +49,14 @@ function startUI() {
 			'MrG.store.WorkflowStore',
 			'MrG.store.ApiStore',
 			'MrG.store.JobsStore',
+			'MrG.store.OutputStore',
+			'MrG.store.BatchRequestStore',
 			'MrG.store.SettingsStore',
 			'MrG.store.SelectTypeStore',
 			'MrG.store.WorkflowConfigureStore',
 			'MrG.store.FieldSelectionStore',
-			'MrG.store.PackagesStore',
+			'MrG.store.AvailablePackagesStore',
+			'MrG.store.InstalledPackagesStore',
 			'MrG.store.PackageRepositoryStore',
 			
 
