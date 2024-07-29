@@ -52,18 +52,7 @@ Ext.define('MrG.main.vm.ActionListVM', {
                 datachanged: 'workflowStoreDataChanged'
             }
         },
-        apiStore: {
-            xclass: 'MrG.store.ApiStore',
-            listeners: {
-                datachanged: 'apiStoreDataChanged'
-            }
-        },
-        jobsStore: {
-            xclass: 'MrG.store.JobsStore',
-            listeners: {
-                datachanged: 'jobsStoreDataChanged'
-            }
-        },
+        
        
     }
 });

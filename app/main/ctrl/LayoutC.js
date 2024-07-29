@@ -13,7 +13,33 @@ Ext.define('MrG.main.ctrl.LayoutC', {
 			themeMenu.getMenu().add({ text: theme.name, listeners: { click: 'setTheme' } })
 		})
 	},	
+	openItem: function (itemName, groupName, record, focusOnNewTab) {
+		var extraMenuItems = this.get("extraMenuItems");
+		var group = extraMenuItems.find(a => a.title == groupName);
+		if (!group) {
+			return;
+		}
+		var item = group.items.find(a => a.title == itemName);
+		if (!item) {
+            return;
+        }
+
+		var tabPanel = this.view;
+		var tab = tabPanel.add({
+			title: record.get("name"),
+			xclass: item.itemView,
+			_itemModel: record,
+			closable: true,
+			listeners: {
+				openWorkflow: 'openWorkflow',
+				openItem: 'openItem',
+			}
+		});
+		if (focusOnNewTab)
+			tabPanel.setActiveItem(tab);
+	},
 	
+
 	getSetTheme: function () {
 		this.set("theme", MrgThemes.selectedTheme)
 		this.set("materialName", MrgThemes.selectedColor)
@@ -97,42 +123,12 @@ Ext.define('MrG.main.ctrl.LayoutC', {
 			scollable: true,
 			listeners: {
 				openWorkflow: 'openWorkflow',
-				openApi: 'openApi',
-				openJob: 'openJob',
+				openItem: 'openItem',
 			}
 		});
 		tabPanel.setActiveItem(tab);
 	},
-	openApi: function (record, focusOnNewTab) {
-		var tabPanel = this.view;
-        var tab = tabPanel.add({
-            title: "API",
-            xclass: 'MrG.main.view.ApiV',
-            _embedWorkflowModel: record,
-            closable: true,
-            listeners: {
-				openApi: 'openApi',
-				openWorkflowByUuid: 'openWorkflowByUuid',
-            }
-        });
-        if (focusOnNewTab)
-            tabPanel.setActiveItem(tab);
-	},
-	openJob: function (record, focusOnNewTab) {
-        var tabPanel = this.view;
-        var tab = tabPanel.add({
-            title: "Jobs",
-            xclass: 'MrG.main.view.JobV',
-            _embedWorkflowModel: record,
-            closable: true,
-            listeners: {
-				openJob: 'openJob',
-				openWorkflowByUuid: 'openWorkflowByUuid',
-            }
-        });
-        if (focusOnNewTab)
-            tabPanel.setActiveItem(tab);
-	},
+	
 	openWorkflowByUuid: function (uuid) {
 		if (!uuid) return;
 		if (this.findTabByUUid(uuid, true)) return;
@@ -167,8 +163,6 @@ Ext.define('MrG.main.ctrl.LayoutC', {
 			_categoryModel: category,
 			closable: true,
 			listeners: {
-				openJob: 'openJob',
-				openApi: 'openApi',
 				openWorkflow: 'openWorkflow',
 			}
 		});

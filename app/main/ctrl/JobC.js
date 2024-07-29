@@ -4,9 +4,9 @@ Ext.define('MrG.main.ctrl.JobC', {
 		this.callParent(arguments);
 	},
 	newRecord: function () {
-		return new MrG.model.JobModel({
+		return new MrG.model.JobsModel({
 			uuid: crypto.randomUUID(),
-			name: 'New API',
+			name: 'New Job',
 			enabled: true
 		});
 	},
@@ -18,7 +18,7 @@ Ext.define('MrG.main.ctrl.JobC', {
 			useDefaultXhrHeader: false,
 			success: function (response, opts) {
 				var data = Ext.decode(response.responseText);
-				record = new MrG.model.JobModel(data);
+				record = new MrG.model.JobsModel(data);
 				me.view._embedWorkflowModel = record;
 				me.initByRecord(record);
 			},

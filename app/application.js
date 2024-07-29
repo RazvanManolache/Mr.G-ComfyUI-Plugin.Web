@@ -34,6 +34,8 @@ function startUI() {
 			'MrG.model.CategoryModel',
 			'MrG.model.WorkflowConfigureModel',
 			'MrG.model.FieldSelectionModel',
+			'MrG.model.PackageModel',
+			'MrG.model.PackageRepositoryModel',
 
 			
 			'MrG.store.RunModeStore',
@@ -49,6 +51,8 @@ function startUI() {
 			'MrG.store.SelectTypeStore',
 			'MrG.store.WorkflowConfigureStore',
 			'MrG.store.FieldSelectionStore',
+			'MrG.store.PackagesStore',
+			'MrG.store.PackageRepositoryStore',
 			
 
 			
@@ -103,6 +107,18 @@ function startUI() {
 			'MrG.grd.act.view.SettingsGridV',
 			'MrG.grd.act.vm.SettingsGridVM',
 			'MrG.grd.act.ctrl.SettingsGridC',
+			'MrG.grd.act.view.OutputGridV',
+			'MrG.grd.act.vm.OutputGridVM',
+			'MrG.grd.act.ctrl.OutputGridC',
+			'MrG.grd.act.view.QueueGridV',
+			'MrG.grd.act.vm.QueueGridVM',
+			'MrG.grd.act.ctrl.QueueGridC',
+			'MrG.grd.act.view.PackagesGridV',
+			'MrG.grd.act.vm.PackagesGridVM',
+			'MrG.grd.act.ctrl.PackagesGridC',
+			'MrG.grd.act.view.PackageRepositoriesGridV',
+			'MrG.grd.act.vm.PackageRepositoriesGridVM',
+			'MrG.grd.act.ctrl.PackageRepositoriesGridC',
 
 			
 			'MrG.base.view.BaseNodeV',

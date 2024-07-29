@@ -11,6 +11,7 @@ Ext.define('MrG.model.SettingsModel', {
       
    
     ],
+    storeIdStart: 'settingsStore_',
     proxy: {
         type: 'rest',
         appendId: false,

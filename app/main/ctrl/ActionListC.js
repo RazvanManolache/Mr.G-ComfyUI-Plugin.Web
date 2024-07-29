@@ -1,5 +1,5 @@
 Ext.define('MrG.main.ctrl.ActionListC', {
-	extend: 'MrG.base.ctrl.BasePanelC',	
+	extend: 'MrG.base.ctrl.BasePanelC',
 	init: function () {
 		this.callParent(arguments);
 		this.view.setMasked(true);
@@ -7,45 +7,84 @@ Ext.define('MrG.main.ctrl.ActionListC', {
 		var tree = this.lookup('treeCategories');
 
 		var categoryStore = this.get("categoryStore");
-		categoryStore.storeId = "categoryStore_"+crypto.randomUUID();
+		categoryStore.storeId = "categoryStore_" + crypto.randomUUID();
 		Ext.StoreMgr.register(categoryStore);
 
 		var workflowStore = this.get("workflowStore");
-		workflowStore.storeId = "workflowStore_"+crypto.randomUUID();
+		workflowStore.storeId = "workflowStore_" + crypto.randomUUID();
 		Ext.StoreMgr.register(workflowStore);
 
-		var apiStore = this.get("apiStore");
-		apiStore.storeId = "apiStore_"+crypto.randomUUID();
-		Ext.StoreMgr.register(apiStore);
 
-		var jobsStore = this.get("jobsStore");
-		jobsStore.storeId = "jobsStore_"+crypto.randomUUID();
-		Ext.StoreMgr.register(jobsStore);
 
 		//this.vm.bind("{searchText}", function (val) { console.log(val) }, this);
 
-		this.extraMenuItems.forEach(function (group) {
+		this.get("extraMenuItems").forEach(function (group) {
 			this.addMenuGroup(group);
 			group.items.forEach(function (item) {
 				this.addMenuItem(group.title, item);
 			}, this);
 		}, this);
-	},	
 
+	},
+	addMenuItem: function (groupName, item) {
+		var reference = this.getMenuGroupItemReference(groupName, item.title);
+		var menuItem = this.lookup(reference);
+		if (!menuItem) {
+			var menuGroup = this.lookup(this.getMenuGroupReference(groupName));
+			menuItem = {
+				xtype: 'button',
+				width: '100%',
+				text: item.title,
+				reference: reference,
+				handler: 'onMenuItemClick',
+			}
+			menuItem = menuGroup.add(menuItem);
+		}
+		var referencePanel = this.getActionPanelReference(groupName);
+		var actionPanel = this.lookup(referencePanel);
+		if (item.store && item.storeName) {
+			if (!this.vm.getStore(item.storeName)) {
+				if (item.storeSingleton) {
+					
+				}
+				else {
+					this.vm.createStore(item.storeName,
+						{
+							xclass: item.store
+						},
+						{
+							genericStoreDataChanged: 'genericStoreDataChanged'
+						}
+					);
+				}
+				
+				var store = this.get(item.storeName);
+				if (item.model) {
+					var storeIdStart = Ext.create(item.model).storeIdStart;
+					store.storeId = storeIdStart + crypto.randomUUID();
+					Ext.StoreMgr.register(store);
+				}
+
+			}
+
+		}
+		actionPanel.getController().addSubPanel(item.title, item.xclass);
+
+	},
 	// #region Categories
 	onExpandAllCategoriesClick: function () {
 		var tree = this.lookup('treeCategories')
 		var toolbar = this.lookup('tbar');
 		toolbar.disable();
 
-		tree.expandAll(function () {			
+		tree.expandAll(function () {
 			toolbar.enable();
 		});
 	},
 
 	onCollapseAllCategoriesClick: function () {
 		var tree = this.lookup('treeCategories')
-	    var toolbar = this.lookup('tbar');
+		var toolbar = this.lookup('tbar');
 		toolbar.disable();
 		tree.collapseAll(function () {
 			toolbar.enable();
@@ -55,20 +94,20 @@ Ext.define('MrG.main.ctrl.ActionListC', {
 	onAddCategoryClick: function () {
 		var leftMenu = this.lookup("leftMenu");
 		var editCategory = this.lookup("editCategoryForm");
-				
-		
+
+
 
 		var category = this.get("selectedCategory");
 		parent_uuid = null;
 		var categoryStore = this.get("categoryStore");
 		var children = categoryStore.getRootNode().childNodes;
-			
+
 		if (category) {
 			parent_uuid = category.get("uuid");
 			if (parent_uuid) {
 				children = categoryStore.findRecord("uuid", parent_uuid).get("children");
 			}
-				
+
 		}
 		var order = children.length + 1;
 		var newCategory = Ext.create('MrG.model.CategoryModel', {
@@ -78,7 +117,7 @@ Ext.define('MrG.main.ctrl.ActionListC', {
 			parent_uuid: parent_uuid
 		})
 		this.set("editCategory", newCategory);
-	
+
 		leftMenu.setActiveItem(editCategory);
 	},
 	onEditCategoryClick: function () {
@@ -87,8 +126,8 @@ Ext.define('MrG.main.ctrl.ActionListC', {
 		this.clearEditCategory();
 		var category = this.get("selectedCategory");
 		this.set("editCategory", category.clone());
-		
-		
+
+
 		console.log("onAddCategoryClick", arguments);
 
 		leftMenu.setActiveItem(editCategory);
@@ -100,7 +139,7 @@ Ext.define('MrG.main.ctrl.ActionListC', {
 		leftMenu.setActiveItem(editCategory);
 	},
 	clearEditCategory: function () {
-		this.set("editCategory", null);		
+		this.set("editCategory", null);
 	},
 	saveCategory: function (ctr, silent) {
 		var store = this.get("categoryStore");
@@ -118,9 +157,9 @@ Ext.define('MrG.main.ctrl.ActionListC', {
 				Ext.Msg.alert('Error', 'Could not save category.');
 			},
 		});
-		
+
 	},
-	
+
 	onDeleteCategoryClick: function () {
 		var me = this;
 		var category = this.get("selectedCategory");
@@ -143,8 +182,8 @@ Ext.define('MrG.main.ctrl.ActionListC', {
 				Ext.Msg.alert('Error', 'Could not delete category.');
 			},
 		});
-		
-		
+
+
 	},
 	assignWorkflowToCategory: function (targetNode, draggedData, targetRecord) {
 		var category_uuid = targetRecord.get('uuid');
@@ -155,7 +194,7 @@ Ext.define('MrG.main.ctrl.ActionListC', {
 		var workflowStore = this.get("workflowStore");
 		workflowStore.reload();
 	},
-	
+
 
 
 	activeCategoryChangedInternal: function () {
@@ -184,9 +223,9 @@ Ext.define('MrG.main.ctrl.ActionListC', {
 
 			this.lookup('workflowGrid').getController().applyFilters();
 		}
-		
+
 	},
-	activeCategoryChanged: function (ctrl, rows) {		
+	activeCategoryChanged: function (ctrl, rows) {
 		var row = rows[0];
 		this.vm.set("selectedCategory", row);
 		this.activeCategoryChangedInternal();
@@ -194,7 +233,7 @@ Ext.define('MrG.main.ctrl.ActionListC', {
 	getAllCategoryIds: function (categoryId) {
 		var me = this;
 		var categories = [categoryId];
-		
+
 		var categoryStore = this.vm.get("categoryStore");
 		categoryStore.getData().items.forEach(function (rec) {
 			if (!categoryId || rec.get("parent_uuid") == categoryId) {
@@ -205,7 +244,7 @@ Ext.define('MrG.main.ctrl.ActionListC', {
 			}
 		});
 		return categories;
-	},	
+	},
 	categoryStoreDataLoaded: false,
 	categoryStoreDataChanged: function (store) {
 
@@ -243,9 +282,9 @@ Ext.define('MrG.main.ctrl.ActionListC', {
 
 	prevSearchFilter: null,
 	prevCategoryFilter: null,
-	
-	
-	
+
+
+
 	onCategoriesExpand: function () {
 		this.lookup("rightMenu").setActiveItem(this.lookup('workflowGrid'));
 		this.set("actionTitle", "Workflows");
@@ -260,26 +299,8 @@ Ext.define('MrG.main.ctrl.ActionListC', {
 		this.lookup("rightMenu").setActiveItem(this.lookup(reference));
 		this.set("actionTitle", title)
 	},
-	
-	extraMenuItems: [
-		{
-			title: 'Settings',
-			items: [
-				{
-					title: 'Settings',
-					xclass: 'MrG.grd.act.view.SettingsGridV'
-				},
-				{
-					title: 'APIs',
-					xclass: 'MrG.grd.act.view.ApiGridV'
-				},
-				{
-					title: 'Jobs',
-					xclass: 'MrG.grd.act.view.JobsGridV'
-				}
-			]
-		}
-	],
+
+
 
 	getActionPanelReference: function (name) {
 		return name + "_ActionPanel";
@@ -302,7 +323,7 @@ Ext.define('MrG.main.ctrl.ActionListC', {
 				listeners: {
 					expand: 'onOtherMenuExpand'
 				},
-                items: []
+				items: []
 			}
 			menuGroup = this.lookup("menuPanel").add(menuGroup);
 		}
@@ -311,39 +332,40 @@ Ext.define('MrG.main.ctrl.ActionListC', {
 		if (!actionPanel) {
 			actionPanel = {
 				xclass: 'MrG.main.view.ActionPanelV',
-                reference: referencePanel,
-                title: name,
-            }
-            actionPanel = this.lookup("rightMenu").add(actionPanel);
+				reference: referencePanel,
+				title: name,
+				listeners: {
+					activeNavigationItemChanged: 'onActiveNavigationItemChanged',
+					newGridItem: 'newGridItem',
+					openFileGridItem: 'openFileGridItem',
+
+				}
+			}
+			actionPanel = this.lookup("rightMenu").add(actionPanel);
 		}
-		
+
 		return menuGroup;
 	},
-	addMenuItem: function (groupName, item) {
-		var reference = this.getMenuGroupItemReference(groupName, item.title);
+	onActiveNavigationItemChanged: function (groupName, itemItlte) {
+		var reference = this.getMenuGroupItemReference(groupName, itemItlte);
 		var menuItem = this.lookup(reference);
-		if (!menuItem) {
-            var menuGroup = this.lookup(this.getMenuGroupReference(groupName));
-            menuItem = {
-				xtype: 'button',
-				width: '100%',
-                text: item.title,
-                reference: reference,
-                handler: 'onMenuItemClick',
-            }
-            menuItem = menuGroup.add(menuItem);
+		var menuGroup = this.lookup(this.getMenuGroupReference(groupName));
+		menuGroup.items.items.forEach(function (item) {
+			if (item.xtype == 'button') {
+				item.setPressed(false);
+			}
+		});
+		if (menuItem) {
+			menuItem.setPressed(true);
 		}
-		var referencePanel = this.getActionPanelReference(groupName);
-		var actionPanel = this.lookup(referencePanel);
-		actionPanel.getController().addSubPanel(item.title, item.xclass);
-
 	},
+
 	onMenuItemClick: function (btn) {
 		var groupName = btn.up().getTitle();
 		var referencePanel = this.getActionPanelReference(groupName);
 		var actionPanel = this.lookup(referencePanel);
 		actionPanel.getController().setActiveSubPanel(btn.getText());
-    },
+	},
 	openWorkflowInternal: function (workflow) {
 		if (!workflow) return;
 		var focusOnNewTab = this.vm.get("focusOnNewTab");
@@ -355,66 +377,47 @@ Ext.define('MrG.main.ctrl.ActionListC', {
 			this.view.close();
 		}
 	},
-	openGridItem: function (type, gridItem) {
-		switch (type) {
-			case "workflow":
-				this.openWorkflowInternal(gridItem);
-				break;
-			case "api":
-				this.openApiInternal(gridItem);
-				break;
-			case "jobs":
-				this.openJobInternal(gridItem);
-				break;
-			default:
-				console.log("Unknown type: " + type)
+	openGridItem: function (type, groupType, gridItem) {
+		if (type == "workflow") {
+			this.openWorkflowInternal(gridItem);
+			return;
 		}
+		this.openItemInternal(type, groupType, gridItem)
 	},
-	openApiInternal: function (api) {
+	openItemInternal: function (type, groupType, object) {
 		var focusOnNewTab = this.vm.get("focusOnNewTab");
-        this.fireViewEventArgs("openApi", [api.copy(), focusOnNewTab]);
-        var closeActionsAfterOpen = this.vm.get("closeActionsAfterOpen");
-        if (closeActionsAfterOpen) {
-            this.view.close();
-        }
-	},
-	openJobInternal: function (job) {
-        var focusOnNewTab = this.vm.get("focusOnNewTab");
-        this.fireViewEventArgs("openJob", [job.copy(), focusOnNewTab]);
-        var closeActionsAfterOpen = this.vm.get("closeActionsAfterOpen");
-        if (closeActionsAfterOpen) {
-            this.view.close();
-        }
-    },
-	newGridItem: function (type) {
-		switch (type) {
-			case "workflow":
-				this.newWorkflow();
-				break;
-			case "api":
-				this.newApi();
-				break;
-			case "jobs":
-				this.newJob();
-                break;
-			default:
-				console.log("Unknown type: " + type)
+		this.fireViewEventArgs("openItem", [type, groupType, object.copy(), focusOnNewTab]);
+		var closeActionsAfterOpen = this.vm.get("closeActionsAfterOpen");
+		if (closeActionsAfterOpen) {
+			this.view.close();
 		}
 	},
-	newJob: function () {
-		var newRecord = Ext.create('MrG.model.JobsModel', {
-            uuid: crypto.randomUUID(),
-			name: 'New job',
-			cron: '0 0 0 * *',
-        });
-        this.openJobInternal(newRecord);
-    },
-	newApi: function () {
-		var newRecord = Ext.create('MrG.model.ApiModel', {
-            uuid: crypto.randomUUID(),
-            name: 'New api'
-        });
-        this.openApiInternal(newRecord);
+	getConfigForType: function (type, group) {
+		var group = this.get("extraMenuItems").find(a => a.title == group);
+		if (!group) return null;
+		var item = group.items.find(a => a.title == type);
+		return item;
+	},
+	newGridItem: function (internalType, type, groupType) {
+		if (!type) return;
+		if (internalType == "workflow") {
+			this.newWorkflow();
+			return;
+		}
+		var conf = this.getConfigForType(type, groupType);
+		if (!conf) {
+			console.log("Unknown type: " + type, groupType);
+		}
+
+		if (!this.newItem(type, groupType, conf.model, conf.newItem)) {
+			console.log("Unknown type: " + type)
+		}
+
+	},
+	newItem: function (type, groupType, model, newTemplate) {
+		newTemplate.uuid = crypto.randomUUID();
+		var newRecord = Ext.create(model, newTemplate);
+		this.openItemInternal(type, groupType, newRecord)
 	},
 	newWorkflow: function () {
 		var selectedCategory = this.get("selectedCategory");
@@ -428,64 +431,40 @@ Ext.define('MrG.main.ctrl.ActionListC', {
 		});
 		this.openWorkflowInternal(newRecord);
 	},
-	openFileGridItem: function (type) {
-		switch (type) {
-			case "workflow":
-				this.openFileWorkflow();
-				break;
-			case "api":
-				this.openFileApi();
-				break;
-			case "job":
-				this.openFileJob();
-                break;
-			default:
-				console.log("Unknown type: " + type)
+	openFileGridItem: function (internalType, type, groupType) {
+		if (internalType == "workflow") {
+			this.openFileWorkflow();
+			return;
 		}
-	},
-	openFileJob: function () {
-        var me = this;
-        var doc = document;
-        var fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.accept = ".mrgj";
-        fileInput.onchange = function () {
-            var file = fileInput.files[0];
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                var contents = e.target.result;
-                var data = JSON.parse(contents);
-                data.uuid = crypto.randomUUID();
-                var job = Ext.create('MrG.model.JobModel', data);
-                me.openJobInternal(job);
-                //remove file input
-            }
-            reader.readAsText(file);
-        }
-        fileInput.click();
-    },
-	openFileApi: function () {
-        var me = this;
-        var doc = document;
-        var fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.accept = ".mrga";
-        fileInput.onchange = function () {
-            var file = fileInput.files[0];
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                var contents = e.target.result;
-                var data = JSON.parse(contents);
-                data.uuid = crypto.randomUUID();
-                var api = Ext.create('MrG.model.ApiModel', data);
-                me.openApiInternal(api);
-                //remove file input
-            }
-            reader.readAsText(file);
-        }
-        fileInput.click();
+		var conf = this.getConfigForType(type, groupType)
+		if (!conf) {
+			console.log("Unknown type: " + type, groupType);
+		}
 
+		this.openFileItem(type, groupType, conf.extension, conf.model);
+		
 	},
+	openFileItem: function (type, groupType, extension, model) {
+		var me = this;
+		var doc = document;
+		var fileInput = document.createElement('input');
+		fileInput.type = 'file';
+		fileInput.accept = extension;
+		fileInput.onchange = function () {
+			var file = fileInput.files[0];
+			var reader = new FileReader();
+			reader.onload = function (e) {
+				var contents = e.target.result;
+				var data = JSON.parse(contents);
+				data.uuid = crypto.randomUUID();
+				var item = Ext.create(model, data);
+				me.openItemInternal(type, groupType, item);
+			}
+			reader.readAsText(file);
+		}
+		fileInput.click();
+	},
+
 	openFileWorkflow: function () {
 		var selectedCategory = this.get("selectedCategory");
 		var selectedCategory_uuid = selectedCategory ? selectedCategory.get("uuid") : null;
@@ -521,12 +500,11 @@ Ext.define('MrG.main.ctrl.ActionListC', {
 			this.workflowStoreDataLoaded = true;
 		this.checkAllStoresLoaded();
 	},
-	apiStoreDataChanged: function (store) {
-		store.getData().items.filter(a=>a.dirty).forEach(a=>a.save())		
+	genericStoreDataChanged: function (store) {
+		store.getData().items.filter(a=>a.dirty).forEach(a=>a.save());
 	},
-	jobsStoreDataChanged: function (store) {
-		store.getData().items.filter(a=>a.dirty).forEach(a=>a.save())
-    },
+
+
 	
 	checkAllStoresLoaded: function () {
 		if (this.workflowStoreDataLoaded && this.categoryStoreDataLoaded) {

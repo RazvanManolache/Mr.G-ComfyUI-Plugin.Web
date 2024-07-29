@@ -1,4 +1,4 @@
-Ext.define('MrG.store.PackagesRepositoryStore', {
+Ext.define('MrG.store.PackageRepositoryStore', {
     extend: 'MrG.base.store.BaseStore',
     model: 'MrG.model.PackageRepositoryModel',
     proxy: {

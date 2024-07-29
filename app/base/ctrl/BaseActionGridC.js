@@ -15,16 +15,16 @@ Ext.define('MrG.base.ctrl.BaseActionGridC', {
 		if(this.get("selectionMode")) return;
 		var gridItem = this.get("selectedGridItem");
 		var type = this.getTypeGrid();
-		this.view.fireEventArgs("openGridItem", [type, gridItem]);
+		this.view.fireEventArgs("openGridItem", [type, this.view.getTitle(), gridItem]);
 	},
 	newGridItem: function () {
 		var type = this.getTypeGrid();
-		this.view.fireEventArgs("newGridItem", [type]);
+		this.view.fireEventArgs("newGridItem", [type, this.view.getTitle()]);
     
 	},
 	openFileGridItem: function () {
 		var type = this.getTypeGrid();
-		this.view.fireEventArgs("openFileGridItem", [type]);
+		this.view.fireEventArgs("openFileGridItem", [type, this.view.getTitle()]);
 	},
 	searchValueChanged: function (ctrl, val) {
 		if (val.length == 0) {
