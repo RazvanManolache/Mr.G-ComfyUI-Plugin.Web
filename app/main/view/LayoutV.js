@@ -14,7 +14,7 @@ Ext.define('MrG.main.view.LayoutV', {
 		userSelectable: {
 			bodyElement: true
 		}
-	},
+	},	
 	masked: {
 		xtype: 'loadmask',
 		message: 'Mr.G is loading...'
@@ -27,72 +27,58 @@ Ext.define('MrG.main.view.LayoutV', {
 		xclass: 'MrG.main.ctrl.LayoutC'
 	},
 	tabBar: {
-		iconAlign:'left',
-		layout: {
-			pack: "left"
-		},
-		defaults: {
-			iconAlign: 'left',
-			/*flex:'1 1 auto',*/
-			//textAlign: 'left',
-			//width: 50,
-		},
-
-		centered: false,
-		items: [{
-			xtype: 'button',
-			text: '+',
-			ui: 'action',
-			setActive: function (active) {
-				this.setPressed(active);
-			},
-			listeners: {
-				scope: 'controller',
-				click: {
-					element: 'element', //bind to the underlying el property on the panel
-					fn: 'addTab'
-				},
-			},
-
-		}, {
-			xtype: 'spacer'
-		},
-
-		{
-			xtype: 'button',
-			ui: 'action',
-			iconCls: 'x-fa fa-palette',
-			reference: 'paletteMenu',
-			tooltip: 'Change colors',
-			bind: {
-				hidden: '{!isMaterial}'
-			},
-			menu: {
-				anchor: true
-			}
-		},
-		{
-			xtype: 'button',
-			ui: 'action',
-			tooltip: 'Change theme',
-			iconCls: 'x-fa fa-swatchbook',
-			reference: 'themeMenu',
-			menu: {
-				anchor: true,
-			},
-
-		}, {
-			xtype: 'button',
-			ui: 'action',
-			iconCls: 'x-fa fa-sync',
-			tooltip: 'Refresh all lists',
-			reference: 'refreshStores',
-			handler: 'refreshAllSingletonStores'
-		},]
+		hidden: true
+	},
+	defaults: {
+		hideMode: 'offsets'
 	},
 	items: [
-		
+		{
+			xclass: 'MrG.main.view.LayoutTabPanelV',
+			reference: 'mainTabPanel',
+			title: 'MrG',
+			listeners: {
+				toComfyUI: 'toComfyUI',
+			}
+
+			
+		},
+		{
+			xtype: 'panel',
+			hideMode: 'visibility',
+			title: 'Comfy',
+			height: '100%',
+			width: '100%',
+			scrollable: 'y',
+			autoSize: true,
+			layout: 'vbox',
+			items: [
+				{
+					xtype: 'button',
+					iconCls: 'x-fa fa-window-restore',
+					ui: 'raised action',
+					tooltip: 'Mr.G AI',
+					handler: 'toMrGUI',
+					floating: true,
+					right: 10,
+					top: 10
+				},
+				{
+					xtype: 'component',
+					height: '100%',
+					width: '100%',
+					layout: 'vbox',
+					html: '<div style="width:100%;height:99.45%;position:relative;"><iframe style="width:100%;height:100%" src="/"></iframe></div>',
+					style: 'background-color: white;',
+                }
+
+
+			]
+
+			
+		}
 	],
+
 	deferredRender: false,
 
 });

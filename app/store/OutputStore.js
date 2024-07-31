@@ -6,6 +6,10 @@ Ext.define('MrG.store.OutputStore', {
         url: '/mrg/outputs',
         reader: {
             type: 'json',
+            rootProperty: 'data',
+            totalProperty: 'total',
+            successProperty: 'success',
+            messageProperty: 'message'
         }
     },
     autoLoad: true

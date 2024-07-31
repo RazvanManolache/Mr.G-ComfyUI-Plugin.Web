@@ -1,4 +1,4 @@
-Ext.define('MrG.grd.act.view.OutputGridV', {
+﻿Ext.define('MrG.grd.act.view.OutputGridV', {
 	extend: 'MrG.base.view.BaseActionGridV',
 	viewModel: {
 		xclass: 'MrG.grd.act.vm.OutputGridVM'
@@ -77,7 +77,7 @@ Ext.define('MrG.grd.act.view.OutputGridV', {
 			reference: 'tagPanel',
 
 			bind: {
-				store: '{jobsStore}'
+				store: '{outputStore}'
 			}
 		},
 
@@ -91,67 +91,39 @@ Ext.define('MrG.grd.act.view.OutputGridV', {
 			items: [
 
 				{
-					xtype: 'grid',
+					xtype: 'dataview',
 					height: '100%',
 					emptyText: 'No Output created',
 					flex: 2,
+					inline: true,
 					reference: 'gridItemList',
-					singleExpand: false,
+					itemTpl: '<div class="dataview-multisort-item">' +
+						'<img draggable="false" src="{htmlRepresentation}" />' +
+						'<h3>{name}</h3>' +
+						'</div>',
 					platformConfig: {
 						desktop: {
-							plugins: [
-								{
-									xclass: 'Ext.grid.plugin.RowDragDrop',
-									groups: ['gridRowGroup', 'categorize'],
-								},
-								{
-									xclass: 'Ext.grid.plugin.RowExpander'
-								}
+							plugins: [								
+								//{
+								//	xclass: 'Ext.grid.plugin.PagingToolbar'
+								//}
 							]
 						},
 						'!desktop': {
 							plugins: [
-								{
-									xclass: 'Ext.grid.plugin.RowExpander'
-								}
+								
 							]
 						},
 					},
-					itemConfig: {
-						body: {
-							tpl: '<div>Description: {description}</div>'
-						}
-					},
+					
 					listeners: {
 						childdoubletap: 'openGridItem',
 						select: 'gridItemSelected',
 						deselect: 'gridItemDeselected'
 					},
-					columns: [
-						{
-							xtype: 'textcolumn',
-							text: 'Name',
-							dataIndex: 'name',
-							flex: 1
-						},
-						{
-							xtype: 'textcolumn',
-							text: 'Tags',
-							dataIndex: 'tags',
-						},
-
-						{
-							text: 'Enabled',
-							xtype: 'checkcolumn',
-							headerCheckbox: true,
-							dataIndex: 'enabled',
-							readOnly: true
-						}
-					],
-					plugins: {
-					},
+					
 					bind: {
-						store: '{jobsStore}'
+						store: '{outputStore}'
 					}
 				}]
 		},

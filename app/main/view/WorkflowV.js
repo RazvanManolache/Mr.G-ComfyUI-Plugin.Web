@@ -634,6 +634,7 @@
 
 				{
 					xclass: "Ext.Panel",
+					hideMode: 'visibility',
 					reference: 'comfyView',
 					platformConfig: {
 						desktop: {
@@ -641,6 +642,8 @@
 								width: '{iframeWidth}',
 								flex: '{iframeFlex}'
 							},
+							//collapsible: 'right',
+
 							resizable: {
 								split: true,
 								edges: 'west',

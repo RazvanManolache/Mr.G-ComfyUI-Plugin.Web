@@ -766,15 +766,35 @@ Ext.define('MrG.main.ctrl.WorkflowC', {
 		if (notifyComfy && link.out.comfy) {
 			var existingLinks = link.out.comfy.outputs[link.out.slot].links;
 			
-			var sameConnection = this.comfyApp.graph.links.filter(a =>
+			var sameConnection = this.findInLinks(this.comfyApp.graph.links,(a =>
 				existingLinks && existingLinks.indexOf(a.id) > -1 && a.target_id == link.in.id
 				&& a.target_slot == link.in.slot 
-			);
+			));
 			if (sameConnection.length == 0) {
 				link.out.comfy.connect(link.out.slot, link.in.id, link.in.slot);
 			}
 				
 		}
+	},
+	findInLinks: function (links, filterFn) {
+		var result = [];
+		if (!links) return result;
+		if (links.length) {
+            links.forEach(function (link) {
+                if (filterFn(link)) {
+                    result.push(link);
+                }
+            });
+        } else {
+            for (var p in links) {
+                var link = links[p];
+                if (filterFn(link)) {
+                    result.push(link);
+                }
+            }
+		}
+		return result;
+
 	},
 	processLinkRemove: function (link, notifyInNode, notifyOutNode, notifyComfy) { 
 
@@ -806,11 +826,11 @@ Ext.define('MrG.main.ctrl.WorkflowC', {
 			
 		if (notifyComfy && link.in.slot!==undefined) {
 			var existingLinks = link.in.comfy.inputs[link.in.slot].link;
-			var sameConnection = this.comfyApp.graph.links.filter(a =>
+			var sameConnection = this.findInLinks(this.comfyApp.graph.links,(a =>
 				a.id > -1 && a.target_id == link.in.id
 				&& a.target_slot == link.in.slot && a.origin_id == link.out.id
 				&& a.origin_slot == link.out.slot
-			);
+			));
 			if (sameConnection.length > 0) {
 				link.in.comfy.disconnectInput(link.in.slot);
 			}

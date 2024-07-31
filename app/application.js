@@ -2,10 +2,21 @@
 function startUI() {
 	Ext.Loader.setConfig({
 		enabled: true,
-		disableCaching: false
+		disableCaching: false,
+		paths: {
+			'Ext.ux.WebSocket': 'app/socket/WebSocket.js',
+			'Ext.ux.WebSocketManager': 'app/socket/WebSocketManager.js',
+			'Ext.util.Memento': 'app/socket/Memento.js',
+		}
 	});
 	Ext.application({
 		requires: [
+			'Ext.util.Memento',
+			'Ext.ux.WebSocket',
+			'Ext.ux.WebSocketManager',
+			'MrG.main.view.LayoutTabPanelV',
+			'MrG.main.vm.LayoutTabPanelVM',
+			'MrG.main.ctrl.LayoutTabPanelC',
 			'MrG.main.view.LayoutV',
 			'MrG.main.vm.LayoutVM',
 			'MrG.main.ctrl.LayoutC',
@@ -39,7 +50,8 @@ function startUI() {
 			'MrG.model.PackageModel',
 			'MrG.model.PackageRepositoryModel',
 
-			
+
+			'MrG.store.SelectTypeStore',
 			'MrG.store.RunModeStore',
 			'MrG.store.ConnectorStore',
 			'MrG.store.SimpleStore',
@@ -52,7 +64,6 @@ function startUI() {
 			'MrG.store.OutputStore',
 			'MrG.store.BatchRequestStore',
 			'MrG.store.SettingsStore',
-			'MrG.store.SelectTypeStore',
 			'MrG.store.WorkflowConfigureStore',
 			'MrG.store.FieldSelectionStore',
 			'MrG.store.AvailablePackagesStore',

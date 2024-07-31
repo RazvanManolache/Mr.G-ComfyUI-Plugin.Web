@@ -29,6 +29,9 @@
     display: none;
 }
 
+.x-innerhtml {
+    height: 100%
+}
 /*#ext-viewport:after {
     content: ' ' !important;
 }*/

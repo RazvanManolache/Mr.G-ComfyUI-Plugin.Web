@@ -6,7 +6,7 @@ Ext.define('MrG.fields.opt.sel.SelectionLocal', {
 	autoSelect: true,
 	required: true,
 	typeAhead: true,
-	enableRegEx: true,
+	//enableRegEx: true,
 	flex: 1,	
 	queryMode: 'local',
 	displayField: 'alias',

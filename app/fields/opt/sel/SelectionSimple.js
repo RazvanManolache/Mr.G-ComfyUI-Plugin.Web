@@ -6,7 +6,7 @@ Ext.define('MrG.fields.opt.sel.SelectionSimple', {
 	autoSelect: true,
 	required: true,
 	typeAhead: true,
-	enableRegEx: true,
+	//enableRegEx: true,
 	displayField: 'alias',
 	valueField: 'uuid',
 	picker: 'auto',

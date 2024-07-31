@@ -6,5 +6,5 @@ Ext.define('MrG.base.view.BaseActionGridV', {
     controller: {
         xclass: 'MrG.base.ctrl.BaseActionGridC'
     },
-
+   
 });
