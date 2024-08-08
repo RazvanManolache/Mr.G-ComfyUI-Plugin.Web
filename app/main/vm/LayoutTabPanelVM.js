@@ -28,7 +28,7 @@ Ext.define('MrG.main.vm.LayoutTabPanelVM', {
                         xclass: 'MrG.grd.act.view.QueueGridV',
 
                         store: 'MrG.store.BatchRequestStore',
-                        storeName: 'requestStore',
+                        storeName: 'queueStore',
                     },
                 ]
             },
@@ -36,26 +36,28 @@ Ext.define('MrG.main.vm.LayoutTabPanelVM', {
                 title: 'Packages',
                 items: [
                     {
-                        title: 'Installed packages',
-                        xclass: 'MrG.grd.act.view.PackagesGridV',
-
-                        store: 'MrG.store.InstalledPackagesStore',
-                        storeName: 'installedPackagesStore',
-                    },
-                    {
                         title: 'Available packages',
-                        xclass: 'MrG.grd.act.view.PackagesGridV',
+                        xclass: 'MrG.grd.act.view.AvailablePackagesGridV',
 
                         store: 'MrG.store.AvailablePackagesStore',
                         storeName: 'availablePackagesStore',
                     },
                     {
                         title: 'Repositories',
-                        xclass: 'MrG.grd.act.view.PackagesGridV',
+                        xclass: 'MrG.grd.act.view.PackageRepositoriesGridV',
 
                         store: 'MrG.store.PackageRepositoryStore',
                         storeName: 'packageRepositoryStore',
                     },
+                    {
+                        title: 'Installed packages',
+                        xclass: 'MrG.grd.act.view.InstalledPackagesGridV',
+
+                        store: 'MrG.store.InstalledPackagesStore',
+                        storeName: 'installedPackagesStore',
+                    },
+                    
+                    
                 ]
             },
             {

@@ -7,10 +7,6 @@ Ext.define('MrG.store.PackageRepositoryStore', {
        reader: {
            type: 'json',
        }
-    },
-    // proxy: {
-    //     type: 'ODataProxy',
-    //     queryable: newContext().PackageRepository
-    // },
+    },   
     autoLoad: true
 });

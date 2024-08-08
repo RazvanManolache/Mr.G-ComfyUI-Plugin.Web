@@ -5,9 +5,29 @@ Ext.define('MrG.model.OutputModel', {
         { name: 'value', type: 'string', allowNull: false },
         { name: 'order', type: 'int', allowNull: false },
         { name: 'node_id', type: 'int', allowNull: false },
+        { name: 'tags', type: 'string', allowNull: false },
         { name: 'output_type', type: 'string', allowNull: false },
         { name: 'create_date', type: 'date', allowNull: false },
         { name: 'rating', type: 'int', allowNull: false },
+        {
+            name: 'icon',
+            calculate: function (data) {
+                switch (data.output_type) {
+                    case "images":
+                        if (data.value) {
+                            var res = JSON.parse(data.value);
+                            if (res.filename)
+                                return '/view?filename=' + res.filename + '&subfolder=' + res.subfolder + '&type=output';
+
+                        }
+                        return "";
+                        
+                    default:
+                        return "";
+                }
+                
+            }
+        },
         {
             name: 'htmlRepresentation',
             calculate: function (data) {
@@ -15,8 +35,9 @@ Ext.define('MrG.model.OutputModel', {
                 switch (data.output_type) {
                     case "images":
                         var res = JSON.parse(data.value);
-                        if(res.filename){
-                            html = "<img src='/mrg/outputs/" + data.batch_step_uuid + "/" + res.filename + "' />";
+                        if (res.filename) {
+                            var url = '/view?filename=' + res.filename +'&subfolder='+res.subfolder+'&type=output'
+                            html = "<img src='" + url +"' />";
                         }
                         break;
                     default:
@@ -26,4 +47,13 @@ Ext.define('MrG.model.OutputModel', {
             }
         }
     ],
+    getTags: function () {
+        var tags = this.get('tags');
+        var result = [];
+        if (tags) {
+            var split = splitText(tags, ',');
+            result = arrayMakeDistinct(split);
+        }
+        return result;
+    }
 });

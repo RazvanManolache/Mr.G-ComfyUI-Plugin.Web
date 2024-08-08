@@ -1,10 +1,10 @@
-Ext.define('MrG.grd.act.view.PackagesGridV', {
+Ext.define('MrG.grd.act.view.AvailablePackagesGridV', {
 	extend: 'MrG.base.view.BaseActionGridV',
 	viewModel: {
-		xclass: 'MrG.grd.act.vm.PackagesGridVM'
+		xclass: 'MrG.grd.act.vm.AvailablePackagesGridVM'
 	},
 	controller: {
-		xclass: 'MrG.grd.act.ctrl.PackagesGridC'
+		xclass: 'MrG.grd.act.ctrl.AvailablePackagesGridC'
 	},
 	height: '100%',
 	flex: 2,
@@ -78,7 +78,7 @@ Ext.define('MrG.grd.act.view.PackagesGridV', {
 			reference: 'tagPanel',
 
 			bind: {
-				store: '{packagesStore}'
+				store: '{availablePackagesStore}'
 			}
 		},
 
@@ -94,7 +94,7 @@ Ext.define('MrG.grd.act.view.PackagesGridV', {
 				{
 					xtype: 'grid',
 					height: '100%',
-					emptyText: 'No Packages installed',
+					emptyText: 'No packages available',
 					flex: 2,
 					reference: 'gridItemList',
 					singleExpand: false,
@@ -153,7 +153,7 @@ Ext.define('MrG.grd.act.view.PackagesGridV', {
 
 					},
 					bind: {
-						store: '{packagesStore}'
+						store: '{availablePackagesStore}'
 					}
 				}]
 		},

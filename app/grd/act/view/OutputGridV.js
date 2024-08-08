@@ -23,35 +23,15 @@
 			xtype: 'spacer'
 		},
 		{
-			xtype: 'button',
-			iconCls: 'x-fa fa-plus',
+			iconCls: 'x-fa fa-tasks',
+			enableToggle: true,
 			bind: {
-				disabled: '{disableAddGridItem}'
-			},
-			menu: {
-				items: [
-					{
-						icon: 'x-fa fa-file-medical',
-						handler: 'newGridItem',
-						bind: {
-							text: 'New {typeGrid}'
-						}
-					},
-					{
-						icon: 'x-fa fa-upload',
-						text: 'Import file',
-						handler: 'openFileGridItem',
-					},
-				]
+				pressed: '{multiSelect}'
 			}
+			
 
-		},
-		{
-			iconCls: 'x-fa fa-pen',
-			handler: 'editGridItem',
-			bind: {
-				disabled: '{disableEditGridItem}'
-			}
+
+
 		},
 		{
 			iconCls: 'x-fa fa-trash',
@@ -60,16 +40,7 @@
 				disabled: '{disableDeleteGridItem}'
 			}
 		},
-		{
-			iconCls: 'x-fa fa-folder-open',
-
-			ui: 'action',
-			handler: 'openGridItem',
-			bind: {
-				text: '{openGridItemText}',
-				disabled: '{disableOpenGridItem}'
-			}
-		}
+		
 	],
 	items: [
 		{
@@ -91,22 +62,65 @@
 			items: [
 
 				{
-					xtype: 'dataview',
-					height: '100%',
+					xtype: 'componentdataview',
+					
+					selectable: 'simple',
+					
+					userSelectable: {
+						element: true, 
+						bodyElement: true 
+					},
+					//hack because i'm too lazy to make a proper component, usde for pagination, without this method it crashes
+					scrollToRecord: function () { },
+					height:'100%',
 					emptyText: 'No Output created',
 					flex: 2,
+					layout: 'fit',
 					inline: true,
+					itemConfig: {
+						viewModel: true,
+						xtype: 'container',
+						style: 'border: 1px solid blue;',
+						border: false,
+						layout: {
+							type: 'vbox',
+							align: 'center',
+							pack: 'space-between',
+							vertical: true
+						},
+						height: 130,
+						items: [
+							
+							{
+								xclass: 'Ext.Img',
+								bind: {
+                                    src: '{record.icon}'
+								},
+								minHeight: 50,
+								minWidth: 50,
+								maxHeight: 100,
+								maxWidth: 100
+							},
+							{
+								xtype: 'rating',
+								bind: {
+									value: '{record.rating}'
+								}
+							}
+
+						]
+					},
 					reference: 'gridItemList',
-					itemTpl: '<div class="dataview-multisort-item">' +
-						'<img draggable="false" src="{htmlRepresentation}" />' +
-						'<h3>{name}</h3>' +
-						'</div>',
+					//itemTpl: '<div class="dataview-multisort-item">' +
+					//	'{htmlRepresentation}' +
+					//	'<h3>{batch_step_uuid}</h3>' +
+					//	'</div>',
 					platformConfig: {
 						desktop: {
 							plugins: [								
-								//{
-								//	xclass: 'Ext.grid.plugin.PagingToolbar'
-								//}
+								{
+									xclass: 'Ext.grid.plugin.PagingToolbar'
+								}
 							]
 						},
 						'!desktop': {
@@ -130,18 +144,16 @@
 		{
 
 			xtype: 'panel',
-			title: 'Edit API attributes',
+			title: 'Details',
 			header: true,
 			reference: 'editGridItemForm',
 
 			dock: 'bottom',
-			bind: {
-				hidden: '{!editFormVisible}'
-			},
+			headerPosition: 'top',
 			platformConfig: {
 				desktop: {
 					collapsible: {
-						collapsed: false,
+						collapsed: true,
 						direction: 'bottom'
 					},
 					resizable: {
@@ -153,53 +165,57 @@
 					height: '100%'
 				}
 			},
-			layout: 'vbox',
+			layout: 'hbox',
 			items: [
-
 				{
-					xtype: 'textfield',
-					label: 'Name',
-					bind: {
-						value: '{editedGridItem.name}',
-						readOnly: '{readOnlyGridItem}'
-					}
-				},
-				{
-					xclass: 'MrG.fields.TextArea',
-					label: 'Description',
-					bind: {
-						value: '{editedGridItem.description}',
-						readOnly: '{readOnlyGridItem}'
-					}
-				},
-				{
-					xtype: 'textfield',
-					label: 'Tags',
-					bind: {
-						value: '{editedGridItem.tags}',
-						readOnly: '{readOnlyGridItem}'
-					}
-				},
-
-				{
-					xtype: 'container',
-					layout: 'hbox',
+					xtype: 'panel',
+					layout: 'vbox',
+					flex:1,
 					items: [
 						{
-							xtype: 'button',
-							handler: 'saveGridItem',
-							iconCls: 'x-fa fa-check',
+							xtype: 'container',
+							layout: 'hbox',
+							items: [
+								{
+									xtype: 'label',
+									html: 'Rating',
+								},
+								{
+									xtype: 'rating',
+									bind: {
+										value: '{editedGridItem.rating}',
+									}
+								},
+							]
+						},
+
+						{
+							xclass: 'MrG.fields.TextArea',
+							label: 'Tags',
 							bind: {
-								disabled: '{disableSaveGridItem}'
+								value: '{editedGridItem.tags}',
 							}
 						},
 						{
-							xtype: 'button',
-							handler: 'cancelEditGridItem',
-							iconCls: 'x-fa fa-times'
-						},
+							xtype: 'textfield',
+							label: 'Create date',
+							readOnly: true,
+							bind: {
+								value: '{editedGridItem.create_date}',
+							}
+						}
 					]
+				},
+				{
+					xtype: 'panel',
+					flex: 1,
+					resizable: {
+						split: true,
+						edges: 'west'
+					},
 				}
+			
+				
 			]
 		}
 	]

@@ -1,16 +1,19 @@
 Ext.define('MrG.store.BatchRequestStore', {
-    extend: 'MrG.base.store.BaseMemoryStore',
+    extend: 'MrG.base.store.BaseStore',
     model: 'MrG.model.BatchRequestModel',
     proxy: {
-       type: 'memory',
-       reader: {
-           type: 'json',
-           rootProperty: 'data'
-       },
-       writer: {
-           type: 'json'
-       },
-    }
+        type: 'rest',
+        url: '/mrg/batch_requests',
+        reader: {
+            type: 'json',
+            rootProperty: 'data',
+            totalProperty: 'total',
+            successProperty: 'success',
+            messageProperty: 'message'
+        }
+    },
+    autoSync: true,
+    autoLoad: true
     
     
     

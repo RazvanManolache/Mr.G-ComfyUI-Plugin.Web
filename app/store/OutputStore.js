@@ -1,5 +1,5 @@
 Ext.define('MrG.store.OutputStore', {
-    extend: 'MrG.base.store.BaseMemoryStore',
+    extend: 'MrG.base.store.BaseStore',
     model: 'MrG.model.OutputModel',
     proxy: {
         type: 'rest',
@@ -12,6 +12,7 @@ Ext.define('MrG.store.OutputStore', {
             messageProperty: 'message'
         }
     },
+    autoSync: true,
     autoLoad: true
     
     

@@ -1,10 +1,10 @@
-Ext.define('MrG.grd.act.view.PackageRepositoriesGridV', {
+Ext.define('MrG.grd.act.view.InstalledPackagesGridV', {
 	extend: 'MrG.base.view.BaseActionGridV',
 	viewModel: {
-		xclass: 'MrG.grd.act.vm.PackageRepositoriesGridVM'
+		xclass: 'MrG.grd.act.vm.InstalledPackagesGridVM'
 	},
 	controller: {
-		xclass: 'MrG.grd.act.ctrl.PackageRepositoriesGridC'
+		xclass: 'MrG.grd.act.ctrl.InstalledPackagesGridC'
 	},
 	height: '100%',
 	flex: 2,
@@ -78,7 +78,7 @@ Ext.define('MrG.grd.act.view.PackageRepositoriesGridV', {
 			reference: 'tagPanel',
 
 			bind: {
-				store: '{packageRepositoryStore}'
+				store: '{installedPackagesStore}'
 			}
 		},
 
@@ -94,7 +94,7 @@ Ext.define('MrG.grd.act.view.PackageRepositoriesGridV', {
 				{
 					xtype: 'grid',
 					height: '100%',
-					emptyText: 'No Package Repositories',
+					emptyText: 'No installed packages',
 					flex: 2,
 					reference: 'gridItemList',
 					singleExpand: false,
@@ -153,7 +153,7 @@ Ext.define('MrG.grd.act.view.PackageRepositoriesGridV', {
 
 					},
 					bind: {
-						store: '{packageRepositoryStore}'
+						store: '{installedPackagesStore}'
 					}
 				}]
 		},

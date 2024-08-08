@@ -1,5 +1,6 @@
 
 function startUI() {
+	
 	Ext.Loader.setConfig({
 		enabled: true,
 		disableCaching: false,
@@ -129,9 +130,12 @@ function startUI() {
 			'MrG.grd.act.view.QueueGridV',
 			'MrG.grd.act.vm.QueueGridVM',
 			'MrG.grd.act.ctrl.QueueGridC',
-			'MrG.grd.act.view.PackagesGridV',
-			'MrG.grd.act.vm.PackagesGridVM',
-			'MrG.grd.act.ctrl.PackagesGridC',
+			'MrG.grd.act.view.InstalledPackagesGridV',
+			'MrG.grd.act.vm.InstalledPackagesGridVM',
+			'MrG.grd.act.ctrl.InstalledPackagesGridC',
+			'MrG.grd.act.view.AvailablePackagesGridV',
+			'MrG.grd.act.vm.AvailablePackagesGridVM',
+			'MrG.grd.act.ctrl.AvailablePackagesGridC',
 			'MrG.grd.act.view.PackageRepositoriesGridV',
 			'MrG.grd.act.vm.PackageRepositoriesGridVM',
 			'MrG.grd.act.ctrl.PackageRepositoriesGridC',
@@ -163,6 +167,7 @@ function startUI() {
 			
 		],
 		name: 'MrG',
+		
 		mainView: 'MrG.main.view.LayoutV',
 		paths: {
 			//MrG: 'MrG'

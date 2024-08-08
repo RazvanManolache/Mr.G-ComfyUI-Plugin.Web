@@ -94,7 +94,7 @@ Ext.define('MrG.main.view.LayoutTabPanelV', {
 		},
 		{
 			xtype: 'button',
-			ui: 'action',
+			ui: 'raised alt',
 			iconCls: 'x-fa fa-project-diagram',
 			tooltip: 'Comfy UI',
 			handler: 'toComfyUI'

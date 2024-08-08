@@ -19,6 +19,11 @@ Ext.define('MrG.model.BatchRequestModel', {
         { name: 'nodes_values', type: 'string', allowNull: true },
         { name: 'run_values', type: 'string', allowNull: true },
         { name: 'current_values', type: 'string', allowNull: true },
+        { name: 'workflow_name', type: 'string', allowNull: true },
+        { name: 'api_name', type: 'string', allowNull: true },
+        { name: 'job_name', type: 'string', allowNull: true },
+        { name: 'steps_count', type: 'int', allowNull: true },
+        { name: 'outputs_count', type: 'int', allowNull: true },
        
     ],
  

@@ -1,15 +1,31 @@
 Ext.define('MrG.base.vm.BaseActionGridVM', {
     extend: 'MrG.base.vm.BaseVM',
     data: {
-        selectedGridItem: null,
+        selectedGridItems: null,
         typeGrid: '',
         searchText: '',
         searchFilter: null,
         editFormVisible: false,
 
-        editedGridItem: null,
+
     },
     formulas: {
+        somethingSelected: function (get) {
+            var selectedGridItems = get("selectedGridItems");
+            if (Array.isArray(selectedGridItems) && selectedGridItems.length) return true;
+            if (!selectedGridItems) return false;
+            return true;
+        },
+        multipleSelected: function (get) {
+            var selectedGridItems = get("selectedGridItems");
+            if (Array.isArray(selectedGridItems) && selectedGridItems.length > 1) return true;
+            return false;
+        },
+        editedGridItem: function (get) {
+            var selectedGridItems = get("selectedGridItems");
+            if (Array.isArray(selectedGridItems) && selectedGridItems.length) return selectedGridItems[0];
+            return selectedGridItems;
+        },
         readOnlyGridItem: function (get) {
             if (get("editedGridItem") && get("editedGridItem.system")) return true;
             return false;
@@ -20,14 +36,17 @@ Ext.define('MrG.base.vm.BaseActionGridVM', {
             return false;
         },
         editGridItemButtonDisabled: function (get) {
-            return !get("editedGridItem")
+            var editedGridItem = get("editedGridItem");
+            return !editedGridItem
         },
         addGridItemButtonDisabled: function (get) {
-            return get("editedGridItem") && get("editedGridItem.uuid").indexOf("00000000") == 0
+            return false;
+            //return get("editedGridItem") && get("editedGridItem.uuid").indexOf("00000000") == 0
         },
         deleteGridItemButtonDisabled: function (get) {
-            return !get("editedGridItem")
-                || get("editedGridItem.uuid").indexOf("00000000") == 0
+            var editedGridItem = get("editedGridItem");
+            return !editedGridItem
+                || editedGridItem.get("uuid").indexOf("00000000") == 0
         },
         openGridItemText: function (get) {
             if (get("platform_desktop")) return "Open";
@@ -38,15 +57,16 @@ Ext.define('MrG.base.vm.BaseActionGridVM', {
             return cat && cat.get("system");
         },
         disableEditGridItem: function (get) {
-            var wf = get("selectedGridItem");
-            return wf == null || get("editFormVisible");
+            var selectedGridItems = get("selectedGridItems");
+            return selectedGridItems == null || !selectedGridItems.length || get("editFormVisible");
         },
         disableDeleteGridItem: function (get) {
-            var wf = get("selectedGridItem");
-            return wf == null || wf.get("system");
+            var selectedGridItems = get("selectedGridItems");
+            return selectedGridItems == null || !selectedGridItems.length || selectedGridItems.get("system");
         },
         disableOpenGridItem: function (get) {
-            return get("selectedGridItem") == null;
+            var selectedGridItems = get("selectedGridItems");
+            return selectedGridItems == null || !selectedGridItems.length;
         },
        
     },

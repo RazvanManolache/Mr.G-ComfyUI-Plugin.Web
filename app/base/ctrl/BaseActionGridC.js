@@ -13,9 +13,16 @@ Ext.define('MrG.base.ctrl.BaseActionGridC', {
     },
 	openGridItem: function () {
 		if(this.get("selectionMode")) return;
-		var gridItem = this.get("selectedGridItem");
+		var gridItems = this.get("selectedGridItems");
 		var type = this.getTypeGrid();
-		this.view.fireEventArgs("openGridItem", [type, this.view.getTitle(), gridItem]);
+		
+		if (!Array.isArray(gridItems))
+			gridItems = [gridItems];
+
+		gridItems.forEach(function (gridItem) {
+			this.view.fireEventArgs("openGridItem", [type, this.view.getTitle(), gridItem]);
+		}, this);
+		
 	},
 	newGridItem: function () {
 		var type = this.getTypeGrid();
@@ -80,58 +87,60 @@ Ext.define('MrG.base.ctrl.BaseActionGridC', {
 			this.prevCategoryFilter = null;
 		}
 
-
-		selected = this.get("selectedGridItem");
-		if (gridItemStore.indexOf(selected) == -1) {
-			this.setSelectedGridItem(null);
-		}
+		this.updateSelectedGridItems();
 	},
-	setSelectedGridItem: function (val) {
-		this.set("selectedGridItem", val);
-		if (val) {
-			this.set("editedGridItem", val.clone())
-		} else {
-			this.clearEditGridItem();
-		}
-	},
+	
 	clearEditGridItem: function () {
 		this.set("editedGridItem", null);
 	},
 	beforeEditGridItem: function () {
 		if (this.get("selectionMode")) return false;
 	},
+	getSelectedGridItems: function () {
+		return this.lookup('gridItemList').getSelection();
+	},
+	updateSelectedGridItems: function () {
+		var gridItems = this.getSelectedGridItems();
+		this.set("selectedGridItems", gridItems);
+	},
 	gridItemDeselected: function () {
-		this.set("selectedGridItem", null);
+		this.updateSelectedGridItems();
 	},
 	gridItemSelected: function (ctrl, records) {
-		if (records.length > 0) {
-			this.setSelectedGridItem(records[0]);
+		this.updateSelectedGridItems();
+	},
+	deleteItem: function (item) {
+		item.erase({
+			failure: function (record, operation) {
+				Ext.Msg.alert('Error', 'Could not delete gridItem.');
+			},
+			callback: function (record, operation, success) {
+				me.set('editFormVisible', false);
+			}
+		});
+	},
+	deleteItems: function (items) {
+		if (!items.length) {
+            items = [items];
 		}
-		else {
-			this.setSelectedGridItem(null);
-		}
+		items.forEach(function (item) {
+			this.deleteItem(item);
+		}, this);
 	},
 	deleteGridItem: function () {
 		var me = this;
-		var selectedGridItem = this.get("selectedGridItem");
+		var selectedGridItems = this.get("selectedGridItems");
 		var store = this.getGridItemStore();
-		Ext.Msg.confirm('Confirmation', 'Are you sure you want to delete the "' + selectedGridItem.get("name") + '" gridItem ?',
+		Ext.Msg.confirm('Confirmation', 'Are you sure you want to delete?',
 			function (answer) {
 				if (answer == 'yes') {
-					selectedGridItem.erase({
-						failure: function (record, operation) {
-							Ext.Msg.alert('Error', 'Could not delete gridItem.');
-						},
-						callback: function (record, operation, success) {
-							me.set('editFormVisible', false);
-						}
-					});
+					deleteItems(selectedGridItems);
 				}
 			});
 	},
 	saveGridItem: function () {
 		var editedGridItem = this.get('editedGridItem');
-		this.set("selectedGridItem", editedGridItem);
+		this.set("selectedGridItems", editedGridItem);
 		var store = this.getGridItemStore();
 		editedGridItem.save({
 			failure: function (record, operation) {
@@ -149,7 +158,7 @@ Ext.define('MrG.base.ctrl.BaseActionGridC', {
 		this.clearEditGridItem();
 	},
 	editGridItem: function () {
-		this.setSelectedGridItem(this.get("selectedGridItem"));
+		this.updateSelectedGridItems();
 		this.set('editFormVisible', true);
 	},
 

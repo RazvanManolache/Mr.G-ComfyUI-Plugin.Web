@@ -1,4 +1,4 @@
-Ext.define('MrG.grd.act.vm.PackagesGridVM', {
+Ext.define('MrG.grd.act.vm.AvailablePackagesGridVM', {
     extend: 'MrG.base.vm.BaseActionGridVM',
     data: {
         typeGrid: 'packages',

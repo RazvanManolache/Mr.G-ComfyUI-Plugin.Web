@@ -32,6 +32,10 @@
 .x-innerhtml {
     height: 100%
 }
+
+iframe {
+    border:0
+}
 /*#ext-viewport:after {
     content: ' ' !important;
 }*/
