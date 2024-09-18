@@ -25,27 +25,13 @@ Ext.define('MrG.grd.act.view.PackageRepositoriesGridV', {
 		{
 			xtype: 'button',
 			iconCls: 'x-fa fa-plus',
+			handler: 'newGridItem',
+			bind: {
+				text: 'New {typeGrid}'
+			},
 			bind: {
 				disabled: '{disableAddGridItem}'
 			},
-			menu: {
-				items: [
-					{
-						icon: 'x-fa fa-file-medical',
-						handler: 'newGridItem',
-						bind: {
-							text: 'New {typeGrid}'
-						}
-					},
-					{
-						icon: 'x-fa fa-upload',
-						text: 'Import file',
-						handler: 'openFileGridItem',
-
-					},
-				]
-			}
-
 		},
 		{
 			iconCls: 'x-fa fa-pen',
@@ -61,16 +47,7 @@ Ext.define('MrG.grd.act.view.PackageRepositoriesGridV', {
 				disabled: '{disableDeleteGridItem}'
 			}
 		},
-		{
-			iconCls: 'x-fa fa-folder-open',
-
-			ui: 'action',
-			handler: 'openGridItem',
-			bind: {
-				text: '{openGridItemText}',
-				disabled: '{disableOpenGridItem}'
-			}
-		}
+		
 	],
 	items: [
 		{
@@ -100,11 +77,7 @@ Ext.define('MrG.grd.act.view.PackageRepositoriesGridV', {
 					singleExpand: false,
 					platformConfig: {
 						desktop: {
-							plugins: [
-								{
-									xclass: 'Ext.grid.plugin.RowDragDrop',
-									groups: ['gridRowGroup', 'categorize'],
-								},
+							plugins: [							
 								{
 									xclass: 'Ext.grid.plugin.RowExpander'
 								}
@@ -120,7 +93,7 @@ Ext.define('MrG.grd.act.view.PackageRepositoriesGridV', {
 					},
 					itemConfig: {
 						body: {
-							tpl: '<div>Description: {description}</div>'
+							tpl: '<div>{description}</div>'
 						}
 					},
 					listeners: {
@@ -140,13 +113,14 @@ Ext.define('MrG.grd.act.view.PackageRepositoriesGridV', {
 							text: 'Tags',
 							dataIndex: 'tags',
 						},
-
 						{
-							text: 'Enabled',
-							xtype: 'checkcolumn',
-							headerCheckbox: true,
-							dataIndex: 'enabled',
-							readOnly: true
+							text: '',
+							width: 'auto',
+							cell: {
+								tools: {
+									search: 'onViewPackages'
+								}
+							}
 						}
 					],
 					plugins: {

@@ -56,17 +56,40 @@ Ext.define('MrG.base.vm.BaseActionGridVM', {
             var cat = get("selectedCategory");
             return cat && cat.get("system");
         },
-        disableEditGridItem: function (get) {
+        somethingSelected: function (get) {
             var selectedGridItems = get("selectedGridItems");
-            return selectedGridItems == null || !selectedGridItems.length || get("editFormVisible");
+            if (Array.isArray(selectedGridItems) && selectedGridItems.length) return true;
+            if (!selectedGridItems) return false;
+            return true;
+        },
+        multipleSelected: function (get) {
+            var selectedGridItems = get("selectedGridItems");
+            if (Array.isArray(selectedGridItems) && selectedGridItems.length > 1) return true;
+            return false;
+        },
+        selectionIsSystem: function (get) {
+            var selectedGridItems = get("selectedGridItems");
+            if(!selectedGridItems) return false;
+            if (Array.isArray(selectedGridItems)) {
+                for (var i = 0; i < selectedGridItems.length; i++) {
+                    if (selectedGridItems[i].get("system")) return true;
+                }
+            }
+            return selectedGridItems.get("system");
+        },
+        disableEditGridItem: function (get) {
+            var somethingSelected = get("somethingSelected");
+            return !somethingSelected || get("editFormVisible");
         },
         disableDeleteGridItem: function (get) {
-            var selectedGridItems = get("selectedGridItems");
-            return selectedGridItems == null || !selectedGridItems.length || selectedGridItems.get("system");
+            var somethingSelected = get("somethingSelected");
+            var selectionIsSystem = get("selectionIsSystem");
+            return !somethingSelected || selectionIsSystem;
         },
         disableOpenGridItem: function (get) {
-            var selectedGridItems = get("selectedGridItems");
-            return selectedGridItems == null || !selectedGridItems.length;
+            var somethingSelected = get("somethingSelected");
+            var multipleSelected = get("multipleSelected");
+            return !somethingSelected || multipleSelected;
         },
        
     },

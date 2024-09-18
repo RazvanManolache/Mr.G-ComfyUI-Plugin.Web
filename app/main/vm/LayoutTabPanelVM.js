@@ -48,6 +48,11 @@ Ext.define('MrG.main.vm.LayoutTabPanelVM', {
 
                         store: 'MrG.store.PackageRepositoryStore',
                         storeName: 'packageRepositoryStore',
+
+                        model: 'MrG.model.PackageRepositoryModel',
+                        newItem: {
+                            name: 'new repository'
+                        }
                     },
                     {
                         title: 'Installed packages',
