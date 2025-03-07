@@ -21,9 +21,7 @@ Ext.define('MrG.main.ctrl.BaseEmbedWorkflowC', {
 		
 
 	},
-	initByUuid: function (uuid) {
-		console.log("should not really reach here");
-	},
+	
 	initByRecord: function (record) {
 		this.updateRecord(record);
 		var workflows = record.get("workflows");

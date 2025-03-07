@@ -35,7 +35,7 @@ Ext.define('MrG.main.ctrl.LayoutTabPanelC', {
 		var tab = tabPanel.add({
 			title: record.get("name"),
 			xclass: item.itemView,
-			_itemModel: record,
+			_embedWorkflowModel: record,
 			closable: true,
 			listeners: {
 				openWorkflow: 'openWorkflow',

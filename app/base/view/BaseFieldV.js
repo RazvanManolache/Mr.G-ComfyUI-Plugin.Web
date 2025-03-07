@@ -9,7 +9,7 @@
 	},
 	controller: {
 		xclass: 'MrG.base.ctrl.BaseFieldC'
-	},	
+	},
 	bind: {
 		hidden: '{fieldHidden}'
 	},
@@ -19,6 +19,25 @@
 				separator: true,
 				disabled: true,
 				height: 20
+			},
+			{
+				xtype: 'button',
+				text: 'Set alias',
+				handler: 'setFieldAlias'
+			},
+			{
+				separator: true,
+				disabled: true,
+				height: 20
+			},
+			{
+
+				xtype: 'button',
+				text: 'Used in output description',
+				enableToggle: true,
+				bind: {
+					pressed: '{usedInDescription}'
+				},
 			},
 			{
 
@@ -58,10 +77,17 @@
 			}
 		},
 		{
-			flex:1,
+			flex: 1,
 			xclass: 'Ext.Label',
 			reference: 'label',
-			style: 'display:flex;align-items: center;',
+			style: 'display:flex;align-items:center;',
+			listeners: {
+				click: {
+					element: 'element', 
+					fn: 'onLabelClick'
+				},
+				
+			},
 			bind: {
 				html: '{label_formatted}',
 				padding: '{label_padding}',

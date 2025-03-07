@@ -6,7 +6,7 @@ Ext.define('MrG.base.vm.BaseActionGridVM', {
         searchText: '',
         searchFilter: null,
         editFormVisible: false,
-
+        openGridItemTextOverride: null,
 
     },
     formulas: {
@@ -31,7 +31,8 @@ Ext.define('MrG.base.vm.BaseActionGridVM', {
             return false;
         },
         disableSaveGridItem: function (get) {
-            if (get("readOnlyGridItem")) return true;
+            // chnaged to remove this, as i decided that even readonly ite4ms can have editable parts
+            //if (get("readOnlyGridItem")) return true;
             if ((get("editedGridItem") && !get("editedGridItem.name"))) return true;
             return false;
         },
@@ -49,6 +50,7 @@ Ext.define('MrG.base.vm.BaseActionGridVM', {
                 || editedGridItem.get("uuid").indexOf("00000000") == 0
         },
         openGridItemText: function (get) {
+            if (get("openGridItemTextOverride")) return get("openGridItemTextOverride");
             if (get("platform_desktop")) return "Open";
             return "";
         },
@@ -74,6 +76,7 @@ Ext.define('MrG.base.vm.BaseActionGridVM', {
                 for (var i = 0; i < selectedGridItems.length; i++) {
                     if (selectedGridItems[i].get("system")) return true;
                 }
+                return false;
             }
             return selectedGridItems.get("system");
         },
@@ -91,6 +94,7 @@ Ext.define('MrG.base.vm.BaseActionGridVM', {
             var multipleSelected = get("multipleSelected");
             return !somethingSelected || multipleSelected;
         },
+        
        
     },
     stores: {

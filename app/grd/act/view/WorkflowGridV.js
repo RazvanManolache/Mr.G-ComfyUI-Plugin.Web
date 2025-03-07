@@ -65,6 +65,11 @@ Ext.define('MrG.grd.act.view.WorkflowGridV', {
 			}
 		},
 		{
+			tooltip: 'Refresh',
+			iconCls: 'x-fa fa-sync',
+			handler: 'refreshGrid',
+		},
+		{
 			iconCls: 'x-fa fa-folder-open',
 
 			ui: 'action',

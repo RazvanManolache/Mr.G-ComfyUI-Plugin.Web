@@ -62,6 +62,11 @@ Ext.define('MrG.grd.act.view.SettingsGridV', {
 			}
 		},
 		{
+			tooltip: 'Refresh',
+			iconCls: 'x-fa fa-sync',
+			handler: 'refreshGrid',
+		},
+		{
 			iconCls: 'x-fa fa-folder-open',
 
 			ui: 'action',

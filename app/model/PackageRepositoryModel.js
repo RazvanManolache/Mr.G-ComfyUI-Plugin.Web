@@ -4,5 +4,13 @@ Ext.define('MrG.model.PackageRepositoryModel', {
         { name: 'url', type: 'string' },
         { name: 'system', type: 'boolean', default: false },
     ],
-   
+    proxy: {
+        type: 'rest',
+        appendId: false,
+        noCache: false,
+        url: '/mrg/package_repositories',
+        writer: {
+            writeAllFields: true
+        }
+    },
 });

@@ -54,12 +54,18 @@ Ext.define('MrG.grd.act.view.JobsGridV', {
 				disabled: '{disableEditGridItem}'
 			}
 		},
+
 		{
 			iconCls: 'x-fa fa-trash',
 			handler: 'deleteGridItem',
 			bind: {
 				disabled: '{disableDeleteGridItem}'
 			}
+		},
+		{
+			tooltip: 'Refresh',
+			iconCls: 'x-fa fa-sync',
+			handler: 'refreshGrid',
 		},
 		{
 			iconCls: 'x-fa fa-folder-open',

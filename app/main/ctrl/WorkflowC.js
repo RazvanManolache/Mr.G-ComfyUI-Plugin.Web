@@ -5,6 +5,7 @@ Ext.define('MrG.main.ctrl.WorkflowC', {
 	comfyDocument: null,
 	chartReady: false,
 	init: function () {
+		this.view.on("workflowLoaded", this.onWorkflowLoaded, this);
 		this.callParent(arguments);		
 		this.view.setMasked(true);
 		
@@ -15,24 +16,52 @@ Ext.define('MrG.main.ctrl.WorkflowC', {
 			if (typeof record == 'object') {
 				this.view.uuid = record.get("uuid");
 				this.initByRecord(record);
-				return;
-			} 
-			this.view.uuid = record;
-			this.initByUuid(record);
+
+			}
+			else {
+				this.view.uuid = record;
+				this.initByUuid(record);
+			}
 		}
 		this.captureFinishedLoading();
+		var settingsList = this.get("settingsList");
+		settingsList = settingsList.map(a => "{" + a + "}");
+		this.vm.bind(settingsList, function (data) {
+			this.checkAutoSave("dataChanged", [this, data]);
+		}, this);
 		
 	},
 	// i hate this method but the only way to capture that it finished loading
 	captureFinishedLoading: function () {
 		if (this.comfyLoaded && Date.now() - this.lastComfyUpdate > 50) {
-			this.view.fireEventArgs("workflowLoaded", [this]);
+			this.fireViewEventArgs("workflowLoaded", [this]);
 		}
 		else {
 			var me = this;
 			setTimeout(function () { me.captureFinishedLoading() }, 20);
 		}
 
+	},
+	workFlowLoaded: false,
+	onWorkflowLoaded: function (ctrl) {
+		this.workFlowLoaded = true;
+	},
+	lastEventTime:0,
+	checkAutoSave: function (eventName, args, who) {
+		if (this.workFlowLoaded && this.get("autoSave")) {
+			this.lastEventTime = Date.now();
+			var me = this;
+			setTimeout(function () {
+				var now = Date.now();
+				if (now - me.lastEventTime > 500) {
+					me.lastEventTime = now;
+					me.saveWorkflow();
+					console.log("Autosaving...")
+                }
+
+			}, 500);
+		}
+            
 	},
 	initByUuid: function (uuid) {
 		var url = '/mrg/workflow?uuid=' + uuid;
@@ -373,6 +402,8 @@ Ext.define('MrG.main.ctrl.WorkflowC', {
 			var comfyNode = this.getComfyNodeById(id);
 			if (comfyNode && comfyNode.mrg && comfyNode.widgets) {
 				var total = comfyNode.widgets.length;
+				var title = comfyNode.title;
+				node.setAlias(title);
 				for (var i = 0; i<total; i++){
                     var widget = comfyNode.widgets[i];
 					var fieldName = widget.name;
@@ -490,6 +521,14 @@ Ext.define('MrG.main.ctrl.WorkflowC', {
 			}
 		}
 	},
+	nodeAliasChanged: function (node, alias) {
+		var id = node.vm.get("id");
+		var comfyNode = this.getComfyNodeById(id);
+		if (comfyNode) {
+            comfyNode.title = alias;
+            this.comfyApp.graph.setDirtyCanvas(true, true);
+        }
+	},
 	comfyFieldConvert: function (comfyNode, widget, isInput) {
 		var node = this.findNodeById(comfyNode.id);
 		if (node) {
@@ -497,7 +536,7 @@ Ext.define('MrG.main.ctrl.WorkflowC', {
         }
 	},
 	getComfyNodeByNode: function (node) {
-		var id = node.getViewModel().get("id");
+		var id = node.vm.get("id");
 		return this.getComfyNodeById(id);
 	},
 	getComfyNodeById: function (id) {
@@ -661,6 +700,7 @@ Ext.define('MrG.main.ctrl.WorkflowC', {
 				nodeFieldValueChanged: 'nodeFieldValueChanged',
 				nodeFieldSequenceChanged: 'nodeFieldSequenceChanged',
 				nodeLinkFieldStateChanged: 'nodeLinkFieldStateChanged',
+				nodeAliasChanged: 'nodeAliasChanged',
 
 				nodeFieldChanged: 'nodeFieldChanged',
 				nodeFieldLinkRemoved: 'nodeFieldLinkRemoved',
@@ -1105,6 +1145,10 @@ Ext.define('MrG.main.ctrl.WorkflowC', {
 					
 
 				}
+			}
+			if (this.get("autoSaveAfterRun")) {
+				this.saveWorkflow();
+				console.log("Autosaving after run...")
 			}
 		}
 	},

@@ -47,6 +47,11 @@ Ext.define('MrG.grd.act.view.PackageRepositoriesGridV', {
 				disabled: '{disableDeleteGridItem}'
 			}
 		},
+		{
+			tooltip: 'Refresh',
+			iconCls: 'x-fa fa-sync',
+			handler: 'refreshGrid',
+		},
 		
 	],
 	items: [
@@ -169,11 +174,19 @@ Ext.define('MrG.grd.act.view.PackageRepositoriesGridV', {
 					}
 				},
 				{
+					xtype: 'textfield',
+					label: 'Url',
+					bind: {
+						value: '{editedGridItem.url}',
+						readOnly: '{readOnlyGridItem}'
+					}
+				},
+				{
 					xclass: 'MrG.fields.TextArea',
 					label: 'Description',
 					bind: {
 						value: '{editedGridItem.description}',
-						readOnly: '{readOnlyGridItem}'
+						//readOnly: '{readOnlyGridItem}'
 					}
 				},
 				{
@@ -181,7 +194,7 @@ Ext.define('MrG.grd.act.view.PackageRepositoriesGridV', {
 					label: 'Tags',
 					bind: {
 						value: '{editedGridItem.tags}',
-						readOnly: '{readOnlyGridItem}'
+						//readOnly: '{readOnlyGridItem}'
 					}
 				},
 

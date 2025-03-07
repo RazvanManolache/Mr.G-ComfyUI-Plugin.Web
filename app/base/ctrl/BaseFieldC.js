@@ -1,9 +1,23 @@
 Ext.define('MrG.base.ctrl.BaseFieldC', {
 	extend: 'MrG.base.ctrl.BaseContainerC',
 	optionsMenu: null,
-
-
+	checkAutoSaveInternal: function (eventName, args) {
+		if (this.fieldInitiated)
+			this.view.parent.getController().checkAutoSave(eventName, args, "field");
+	},
+	onLabelClick: function () {
+		this.fireViewEventArgs("fieldLabelClicked", [this]);
+		var usedInDescription = this.get("usedInDescription");
+		this.set("usedInDescription", !usedInDescription);
+	},
+	fieldInitiated: false,
+	onFieldInitiated: function () {
+		this.fieldInitiated = true
+	},
 	init: function () {
+		//bind to fieldInitiated event to know when field is initiated
+		this.view.on("fieldInitiated", this.onFieldInitiated, this);
+		
 		this.callParent(arguments);
 
 		var me = this;
@@ -51,13 +65,8 @@ Ext.define('MrG.base.ctrl.BaseFieldC', {
 		this.vm.bind("{linkField}", this.linkFieldChanged, this);
 
 		//events to update workflow on field changes
-		this.vm.bind("{value}", this.fieldChanged, this);
-		this.vm.bind("{linkValue}", this.fieldChanged, this);
-		this.vm.bind("{sequenceTotalCnt}", this.fieldChanged, this);
-		this.vm.bind("{sequencePosition}", this.fieldChanged, this);
-		this.vm.bind("{fieldSelected}", this.fieldChanged, this);
-		this.vm.bind("{hasSequence}", this.fieldChanged, this);
-		this.vm.bind("{sequence}", this.fieldChanged, this);
+		this.vm.bind(["{value}", "{linkValue}", "{sequenceTotalCnt}", "{sequencePosition}", "{fieldSelected}",
+			"{hasSequence}", "{sequence}"], this.fieldChanged, this);
 
 		//TODO: this one overlaps big time with the one above, need to find a way to merge, generates event sequenceChanged
 		this.vm.bind("{sequenceTotalCnt}", this.onSequenceChange, this);
@@ -70,6 +79,13 @@ Ext.define('MrG.base.ctrl.BaseFieldC', {
 		}
 		
 		this.fireViewEventArgs("fieldInitiated", [this]);
+
+
+		var mandatoryFields = this.get("mandatoryFields");
+		mandatoryFields = mandatoryFields.map(a => "{" + a + "}");
+		this.vm.bind(mandatoryFields, function (data) {
+			this.checkAutoSaveInternal("dataChanged", [this, data]);
+		}, this);
 	},
 	selectField: function (selected) {
 		if (selected === undefined) selected = true;
@@ -542,6 +558,24 @@ Ext.define('MrG.base.ctrl.BaseFieldC', {
 	},
 	onLinkDestroy: function () {
 		this.fireViewEventArgs("fieldLinkDestroyed", [this, this.getLinkData()]);
+	},
+	setFieldAlias: function () {
+		var currentLabel = this.get("label");
+		var currentAlias = this.get("alias");
+		var me = this;
+		var defText = currentLabel;
+		var promptText = 'Set alias for '+ currentLabel ;
+		if (currentAlias) {
+            defText = currentAlias;
+			promptText = 'Change alias for ' + currentAlias + '(' + currentLabel + ')';
+        }
+		Ext.Msg.prompt(promptText, 'Please enter a text:', function(btn, text) {
+			if (btn === 'ok') {
+				text = text.trim();
+				if(text==currentLabel) text = '';
+				me.set('alias', text);
+			}
+		}, null, false, defText); 
 	},
 
 	// #region Sequence

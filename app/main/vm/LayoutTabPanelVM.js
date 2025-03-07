@@ -17,31 +17,29 @@ Ext.define('MrG.main.vm.LayoutTabPanelVM', {
                 title: 'Output',
                 items: [
                     {
+                        title: 'Queue',
+                        xclass: 'MrG.grd.act.view.QueueGridV',
+
+                        store: 'MrG.store.BatchRequestStore',
+                        storeName: 'queueStore',
+
+                        itemView: 'MrG.main.view.QueueV',
+                        itemTitle: 'Queue',
+                    },
+                    {
                         title: 'Outputs',
                         xclass: 'MrG.grd.act.view.OutputGridV',
 
                         store: 'MrG.store.OutputStore',
                         storeName: 'outputStore',
                     },
-                    {
-                        title: 'Queue',
-                        xclass: 'MrG.grd.act.view.QueueGridV',
-
-                        store: 'MrG.store.BatchRequestStore',
-                        storeName: 'queueStore',
-                    },
+                    
                 ]
             },
             {
                 title: 'Packages',
                 items: [
-                    {
-                        title: 'Available packages',
-                        xclass: 'MrG.grd.act.view.AvailablePackagesGridV',
-
-                        store: 'MrG.store.AvailablePackagesStore',
-                        storeName: 'availablePackagesStore',
-                    },
+                    
                     {
                         title: 'Repositories',
                         xclass: 'MrG.grd.act.view.PackageRepositoriesGridV',
@@ -51,8 +49,15 @@ Ext.define('MrG.main.vm.LayoutTabPanelVM', {
 
                         model: 'MrG.model.PackageRepositoryModel',
                         newItem: {
-                            name: 'new repository'
+                            name: 'New repository'
                         }
+                    },
+                    {
+                        title: 'Available packages',
+                        xclass: 'MrG.grd.act.view.AvailablePackagesGridV',
+
+                        store: 'MrG.store.AvailablePackagesStore',
+                        storeName: 'availablePackagesStore',
                     },
                     {
                         title: 'Installed packages',

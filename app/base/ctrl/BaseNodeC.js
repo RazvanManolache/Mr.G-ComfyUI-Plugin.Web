@@ -1,6 +1,8 @@
 Ext.define('MrG.base.ctrl.BaseNodeC', {
 	extend: 'MrG.base.ctrl.BasePanelC',
+	
 	init: function () {
+		this.view.on("nodeInitiated", this.onNodeInitiated, this);
 		this.callParent(arguments);
 
 		var view = this.getView();
@@ -57,6 +59,8 @@ Ext.define('MrG.base.ctrl.BaseNodeC', {
 				this.set('nodeHidden', mrgConfig.nodeHidden),
 				this.set('selectedNode', mrgConfig.selectedNode),
 				this.set('order', mrgConfig.order),
+				this.set('collapsed', mrgConfig.collapsed),
+				this.set('alias', mrgConfig.alias),
 
 				this.getFields().forEach(function (field) {
 					var name = field.getFieldName();
@@ -67,9 +71,24 @@ Ext.define('MrG.base.ctrl.BaseNodeC', {
 				})
 
 		}
-
-
+		this.fireViewEventArgs("nodeInitiated", [this]);
 		
+		
+		
+	},
+	nodeInitiated: false,
+	onNodeInitiated: function (node) {
+		this.nodeInitiated = true;
+	},
+	checkAutoSave: function (eventName, args, who) {
+		
+		
+		if (this.nodeInitiated) {
+			//dislike this very much
+			var wfCtrl = this.view.parent.parent.parent.getController();
+			wfCtrl.checkAutoSave(eventName, args, who ? who : "node");
+		}
+			
 	},
 	selectField: function (fieldName, selected) {
 		if (selected === undefined) selected = true;
@@ -140,6 +159,36 @@ Ext.define('MrG.base.ctrl.BaseNodeC', {
         });
         return res;
 	},
+	setNodeAlias: function () {
+		var currentTitle = this.get("title");
+		var currentAlias = this.get("alias");
+		var me = this;
+		var titlePanel = this.get("titlePanel");
+		var defText = currentTitle;
+		if (currentAlias) {
+            defText = currentAlias;
+        }
+		Ext.Msg.prompt('Set alias for '+ titlePanel + "(type: "+currentTitle+")", 'Please enter a text:', function(btn, text) {
+			if (btn === 'ok') {
+				me.setAlias(text);
+			}
+		}, null, false, defText); 
+	},
+	setAlias: function (text) {
+		var currentTitle = this.get("title");
+		var previousAlias = this.get('alias');
+		text = text.trim();
+		if(text == currentTitle) text = '';
+		this.set('alias', text);
+		if (previousAlias != text) {
+			if(!text){
+				text = currentTitle;
+			}
+            this.fireViewEventArgs("nodeAliasChanged", [this, text]);
+        }
+		
+		
+	},
 	getNodeValues: function (noFields) {
 
 		var me = this;
@@ -155,6 +204,8 @@ Ext.define('MrG.base.ctrl.BaseNodeC', {
 			xclass: this.view.xclass,
 			className: this.get('className'),
 			nodeHidden: this.get('nodeHidden'),
+			collapsed: this.get('collapsed'),
+			alias: this.get('alias'),
 			selectedNode: this.get('selectedNode'),
 			order: this.get("order"),
 		};

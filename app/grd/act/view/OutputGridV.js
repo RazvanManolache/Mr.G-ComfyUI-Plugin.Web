@@ -23,22 +23,58 @@
 			xtype: 'spacer'
 		},
 		{
+			tooltip: 'Show details',
+			enableToggle: true,
+			bind: {
+				pressed: '{showDetails}',
+				iconCls: '{showDetails ? "x-fa fa-chevron-up" : "x-fa fa-chevron-down"}'
+			}
+		},
+		{
+			iconCls: 'x-fa fa-tags',
+			tooltip: 'Show tags',
+			enableToggle: true,
+			bind: {
+				pressed: '{showTags}'
+			}
+		},
+		{
+			iconCls: 'x-fa fa-star',
+			tooltip: 'Show ratings',
+			enableToggle: true,
+			bind: {
+				pressed: '{showRatings}'
+			}
+		},
+		{
 			iconCls: 'x-fa fa-tasks',
+			tooltip: 'Multi Select',
 			enableToggle: true,
 			bind: {
 				pressed: '{multiSelect}'
 			}
-			
-
-
-
 		},
 		{
+			tooltip: 'Download',
+			iconCls: 'x-fa fa-download',
+			handler: 'downloadGridItem',
+			bind: {
+				disabled: '{disableDeleteGridItem}'
+			}
+		},
+		
+		{
 			iconCls: 'x-fa fa-trash',
+			tooltip: 'Delete selected items',
 			handler: 'deleteGridItem',
 			bind: {
 				disabled: '{disableDeleteGridItem}'
 			}
+		},
+		{
+			tooltip: 'Refresh',
+			iconCls: 'x-fa fa-sync',
+			handler: 'refreshGrid',
 		},
 		
 	],
@@ -53,93 +89,159 @@
 		},
 
 		{
-			xtype: 'panel',
+			xtype: 'componentdataview',
+			scrollable: true,
+			selectable: 'simple',
+			style: {
+				overflow: 'scroll'
+			},
+			userSelectable: {
+				element: true,
+				bodyElement: true,
+			},
+
+			// Hack to prevent crashes during pagination
+			scrollToRecord: Ext.emptyFn, // Cleaner way to define an empty function
+
 			height: '100%',
+			emptyText: 'No Output created',
 			flex: 2,
+			layout: 'fit',
+			inline: true,
 
+			itemCls: 'dataview-item',
+			itemConfig: {
+				viewModel: true,
+				xtype: 'container',
+				height: 'auto',
+				width: 'auto',
 
+				border: false,
+				style: {
+					border: '1px solid blue',
+					overflow: 'unset',
+				},
+				layout: {
+					type: 'vbox', // Vertical layout for child items
+					align: 'center',
+					pack: 'start', // Start packing vertically
+					vertical: true
+				},
+				defaults: {
+					margin: '5 0', // Add spacing between items
+					cls: 'dataview-item-content' // Add custom class for styling
+				},
+				items: [
+					{
+						xtype: 'label',
+						bind: {
+							html: '<h2>{record.workflow_name}</h2>',
+							hidden: '{!showDetails}'
+						},
+						style: {
+							whiteSpace: 'normal', // Enable wrapping
+							textAlign: 'center'
+						}
+					},
+					{
+						xtype: 'label',
+						bind: {
+							html: '<b>{record.description}</b>',
+							hidden: '{!showDetails}'
+						},
+						style: {
+							whiteSpace: 'normal', // Enable wrapping
+							textAlign: 'center'
+						}
+					},
+					{
+						xtype: 'label',
+						bind: {
+							html: '<i>{record.nice_type} - {record.create_date:date("d/m/Y H:i")}</i>',
+							hidden: '{!showDetails}'
+						},
+						style: {
+							whiteSpace: 'normal', // Enable wrapping
+							textAlign: 'center'
+						}
+					},
+					{
+						xtype: 'rating',
+						bind: {
+							value: '{record.rating}',
+							hidden: '{!showRatings}'
+						},
+						style: {
+							marginTop: '10px',
+							textAlign: 'center'
+						}
+					},
+					{
+						xtype: 'image', // Use xtype 'image' instead of xclass
+						bind: {
+							src: '{record.icon}'
+						},
+						width: 150,
+						height: 150,
+						style: {
+							objectFit: 'contain', // Ensure the image fits within bounds
+							margin: '10px auto'
+						}
+					},
+					{
+						xtype: 'label',
+						bind: {
+							html: '<i>{record.tags}</i>',
+							hidden: '{!showTags}'
+						},
+						style: {
+							whiteSpace: 'normal', // Enable wrapping
+							textAlign: 'center'
+						}
+					},
+				]
+			},
 
-			items: [
+			reference: 'gridItemList',
 
+			//platformConfig: {
+			//	desktop: {
+			//		plugins: [
+			//			{
+			//				xclass: 'Ext.grid.plugin.PagingToolbar',
+			//			}
+			//		]
+			//	}
+			//},
+
+			listeners: {
+				childdoubletap: 'openGridItem',
+				select: 'gridItemSelected',
+				deselect: 'gridItemDeselected'
+			},
+
+			bind: {
+				store: '{outputStore}'
+			}
+		},
+		//horrible hack but otherwise the paging toolbar is at bottom of scrollable container
+		{
+			xtype: 'grid',
+			listeners: {
+				painted: function (grid) {
+					grid.el.down('.x-dataview-body-el').setStyle('display', 'none'); // Hide grid content
+				}
+			},
+
+			bind: {
+				store: '{outputStore}'
+			},
+			plugins: [
 				{
-					xtype: 'componentdataview',
-					
-					selectable: 'simple',
-					
-					userSelectable: {
-						element: true, 
-						bodyElement: true 
-					},
-					//hack because i'm too lazy to make a proper component, usde for pagination, without this method it crashes
-					scrollToRecord: function () { },
-					height:'100%',
-					emptyText: 'No Output created',
-					flex: 2,
-					layout: 'fit',
-					inline: true,
-					itemConfig: {
-						viewModel: true,
-						xtype: 'container',
-						style: 'border: 1px solid blue;',
-						border: false,
-						layout: {
-							type: 'vbox',
-							align: 'center',
-							pack: 'space-between',
-							vertical: true
-						},
-						height: 130,
-						items: [
-							
-							{
-								xclass: 'Ext.Img',
-								bind: {
-                                    src: '{record.icon}'
-								},
-								minHeight: 50,
-								minWidth: 50,
-								maxHeight: 100,
-								maxWidth: 100
-							},
-							{
-								xtype: 'rating',
-								bind: {
-									value: '{record.rating}'
-								}
-							}
+					xclass: 'Ext.grid.plugin.PagingToolbar',
+				}
+			],
 
-						]
-					},
-					reference: 'gridItemList',
-					//itemTpl: '<div class="dataview-multisort-item">' +
-					//	'{htmlRepresentation}' +
-					//	'<h3>{batch_step_uuid}</h3>' +
-					//	'</div>',
-					platformConfig: {
-						desktop: {
-							plugins: [								
-								{
-									xclass: 'Ext.grid.plugin.PagingToolbar'
-								}
-							]
-						},
-						'!desktop': {
-							plugins: [
-								
-							]
-						},
-					},
-					
-					listeners: {
-						childdoubletap: 'openGridItem',
-						select: 'gridItemSelected',
-						deselect: 'gridItemDeselected'
-					},
-					
-					bind: {
-						store: '{outputStore}'
-					}
-				}]
 		},
 		{
 

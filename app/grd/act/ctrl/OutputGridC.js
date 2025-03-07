@@ -8,6 +8,33 @@ Ext.define('MrG.grd.act.ctrl.OutputGridC', {
             this.lookup('gridItemList').setSelectable(value);
         }, this);
     },
+    downloadGridItem: function () {
+        // list function arguments
+        var me = this;
+        var grid = me.getView();
+        var gridItemList = this.lookup('gridItemList');
+        console.log(gridItemList);
+
+        //for each item of grid check if it has border
+        //if it has border then add it to selection
+        var selection = [];
+        gridItemList.items.each(function (item) {
+            if (item.getBorder()) {
+                selection.push(item.getRecord());
+            }
+        });
+        
+        if (selection.length === 0) {
+            Ext.Msg.alert('Error', 'Please select a row to download.');
+            return;
+        }
+        selection.forEach(function (record) {
+            var url = me.getDownloadUrl(record);
+            window.open(url, '_blank');
+        });
+
+
+    },
     getDataViewItem: function (dataView, record) {
         var ret = null;
         dataView.items.each(function (item) {

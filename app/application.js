@@ -91,6 +91,10 @@ function startUI() {
 			'MrG.main.ctrl.JobC',
 			'MrG.main.vm.JobVM',
 			'MrG.main.view.JobV',
+			'MrG.main.ctrl.QueueC',
+			'MrG.main.vm.QueueVM',
+			'MrG.main.view.QueueV',
+
 
 			'MrG.dialog.view.SelectWorkflowV',
 			'MrG.dialog.vm.SelectWorkflowVM',

@@ -1,3 +1,12 @@
+.x-label {
+    user-select: text !important;
+    cursor: text; /* Optional: Show text cursor */
+}
+
+h2 {    
+    margin: 0;
+}
+
 .fa-gear:before,
 .fa-cog:before {
     content: "\f013" !important;

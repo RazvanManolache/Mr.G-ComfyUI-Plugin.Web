@@ -3,6 +3,8 @@ Ext.define('MrG.model.NamedObjectModel', {
     fields: [
         { name: 'name', type: 'string' },
         { name: 'description', type: 'string' },
+        //TODO: implement comments
+        { name: 'comments', type: 'string' },
         { name: 'create_date', type: 'date' },
         { name: 'update_date', type: 'date' },
         { name: 'tags', type: 'string' },

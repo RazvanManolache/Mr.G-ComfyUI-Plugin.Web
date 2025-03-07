@@ -24,42 +24,36 @@ Ext.define('MrG.grd.act.view.QueueGridV', {
 		},
 		{
 			xtype: 'button',
-			iconCls: 'x-fa fa-plus',
+			iconCls: 'x-fa fa-play',
+			tooltip: 'Resume selected',
+			handler: 'resumeGridItem',
 			bind: {
-				disabled: '{disableAddGridItem}'
-			},
-			menu: {
-				items: [
-					{
-						icon: 'x-fa fa-file-medical',
-						handler: 'newGridItem',
-						bind: {
-							text: 'New {typeGrid}'
-						}
-					},
-					{
-						icon: 'x-fa fa-upload',
-						text: 'Import file',
-						handler: 'openFileGridItem',
-
-					},
-				]
+				disabled: '{disableResumeGridItem}'
 			}
-
 		},
 		{
-			iconCls: 'x-fa fa-pen',
-			handler: 'editGridItem',
+			xtype: 'button',
+			iconCls: 'x-fa fa-pause',
+			tooltip: 'Pause selected',
+			handler: 'pauseGridItem',
 			bind: {
-				disabled: '{disableEditGridItem}'
-			}
+                disabled: '{disablePauseGridItem}'
+            }
+
+
 		},
+		
 		{
 			iconCls: 'x-fa fa-trash',
 			handler: 'deleteGridItem',
 			bind: {
 				disabled: '{disableDeleteGridItem}'
 			}
+		},
+		{
+			tooltip: 'Refresh',
+			iconCls: 'x-fa fa-sync',
+			handler: 'refreshGrid',
 		},
 		{
 			iconCls: 'x-fa fa-folder-open',
@@ -120,7 +114,7 @@ Ext.define('MrG.grd.act.view.QueueGridV', {
 					},
 					itemConfig: {
 						body: {
-							tpl: '<div>Description: {description}</div>'
+							tpl: '<div>{nice_description}</div>'
 						}
 					},
 					listeners: {
@@ -137,21 +131,78 @@ Ext.define('MrG.grd.act.view.QueueGridV', {
 						},
 						{
 							xtype: 'textcolumn',
+							text: 'Create date',
+							width: 160,
+							dataIndex: 'create_date',
+							formatter: 'date("Y/m/d H:i:s")',
+						},
+						//this was horrible, just to add a progress bar to a grid, probably could do more color changes, maybe later
+						//just realised that i should probably keep the same color coding for the other applications... ffs
+						{
+							text: 'Progress',
+							width: 160,
+							
+							cell: {
+								xtype: 'widgetcell',
+								widget: {
+									xtype: 'progress',
+									bind: '{record.percent}',
+									ui: 'warning',
+									
+									listeners: {
+										painted: function (cell) {
+											var record = cell.up().getRecord();
+											if (record) {
+												cell.setValue(record.get('percentage')); 
+												cell.setText(record.get('progress')); 
+												var status = record.get('status');
+												switch (status) {
+													case "queued":
+                                                        cell.setUi("info");
+														break;
+													case "running":
+														cell.setUi("warning");
+                                                        break;
+                                                    case "finished":
+                                                        cell.setUi("success");
+                                                        break;
+													case "failed":
+													case "invalid":
+                                                        cell.setUi("error");
+                                                        break;
+                                                }
+												
+											}
+										}
+									}
+								},
+								
+								
+								
+							}
+						}
+,
+
+						
+						{
+							dataIndex: 'outputs_count',
+							text: 'Outputs',
+							xtype: 'textcolumn',
+						},
+						{
+							xtype: 'textcolumn',
 							text: 'Tags',
 							dataIndex: 'tags',
 						},
+						
 
+						
+					],
+					plugins: [
 						{
-							text: 'Enabled',
-							xtype: 'checkcolumn',
-							headerCheckbox: true,
-							dataIndex: 'enabled',
-							readOnly: true
+							xclass: 'Ext.grid.plugin.PagingToolbar',
 						}
 					],
-					plugins: {
-
-					},
 					bind: {
 						store: '{queueStore}'
 					}

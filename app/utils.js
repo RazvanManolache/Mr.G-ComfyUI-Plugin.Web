@@ -7,6 +7,15 @@ isObject = function (obj) {
         obj !== null
 }
 
+function isValidURL(url) {
+    try {
+        // Use the URL constructor to parse the string
+        new URL(url);
+        return true;
+    } catch (e) {
+        return false; // If an error is thrown, it's not a valid URL
+    }
+}
 MrGlogger = function () {
    // if (arguments[1] == "model" || arguments[1] == "MODEL")
      //   console.log(...arguments)

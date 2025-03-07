@@ -7,6 +7,10 @@ Ext.define('MrG.main.vm.WorkflowVM', {
 			"hideModifying", "hideConfigure", "showHiddenNodes", "forceShowHiddenFields", "forceHideFields", "hideEditForm", 
 			//the options for running the workflow
 			"sequenceFields", "selectedRunMode", "runSettings",
+			//autosave options
+			"autoSaveAfterRun", "autoSave",
+			//what to use in output description
+			"modifiedFieldsOutputDescription", "visibleFieldsOutputDescription",
 			// the options for searching within the workflow
 			"searchKeepSelected", "searchUseTitle", "searchUseComfyMenu", "searchUseDescription", "searchUseFields",
 			// TODO: not really working
@@ -26,7 +30,14 @@ Ext.define('MrG.main.vm.WorkflowVM', {
 		hideInConnections: false,
 		// Setting - hide the connections that are going out of nodes
 		hideOutConnections: false,
-
+		// Setting - auto save the workflow after running
+		autoSaveAfterRun: false,
+		// Setting - auto save the workflow
+		autoSave: false,
+		// Setting - use the modified fields for the output description
+		modifiedFieldsOutputDescription: false,
+		// Setting - use the visible fields for the output description
+		visibleFieldsOutputDescription: false,
 		// Setting - hide the titles of the nodes
 		hideTitles: false,
 		// Setting - hide the modifying options for the nodes

@@ -33,12 +33,16 @@ Ext.define('MrG.base.ctrl.BaseC', {
 		"openWorkflow",
 		//NODE EVENTS
 		//when clicking on a node
-		"clickedNode",
+		"clickedNode", 
+		// when clicking on label of a field
+		"fieldLabelClicked",
+		// when node alias is changed
+		"nodeAliasChanged",
 		//FIELD EVENTS
 		//events for when a value is added or removed from a link field
 		"nodeFieldLinkRemoved", "nodeFieldLinkAdded", "fieldLinkRemoved", "fieldLinkAdded",
 		// this is for when a link field is created/destroyed in UI, it notifies the port store
-		"nodeFieldLinkInitialized", "nodeFieldLinkDestroyed", "fieldLinkInitialized", "fieldLinkDestroyed",
+		"nodeFieldLinkInitialized", "nodeFieldLinkDestroyed", "fieldLinkInitialized", "fieldLinkDestroyed", "nodeInitiated",
 		// this is to change type of flexible ports in the ports store (like for reroute and primitive) and for converting fields to inputs or viceversa
 		"nodeLinkFieldStateChanged", "linkFieldStateChanged",
 		//events for the fields sequence changing screen
@@ -49,21 +53,27 @@ Ext.define('MrG.base.ctrl.BaseC', {
 		"activeNavigationItemChanged",
 		//these are used to notify comfy of value changes
 		"nodeFieldValueChanged", "fieldValueChanged",
+		//these are used to notify everything was created for field
+		"nodeFieldInitiated", "fieldInitiated",
 		//these just reflect what the field is throwing, already see those
 		"nodeFieldSequenceChanged", "nodeFieldLinkAdded"],
 	blockEventList: [
-		//doesn't really do anything right now
-		"nodeFieldInitiated", "fieldInitiated",
+		
 	],
 	fireViewEventArgs: function (eventName, args) {
 		this.setInternalVariables();
+		if (eventName != "clickedNode") {
+			if (this.checkAutoSave) {
+				this.checkAutoSave(eventName, args);
+			}
+		}
 		if (this.blockEventList && this.blockEventList.indexOf(eventName) != -1) {
 			return;
 		}
 		if (!this.ignoreEventLogList || this.ignoreEventLogList.indexOf(eventName) == -1) {
 			console.log(eventName, args);
 		}
-
+	
 
 		this.view.fireEventArgs(eventName, args);
 	},
@@ -105,6 +115,10 @@ Ext.define('MrG.base.ctrl.BaseC', {
 			return null;
 		}
 		return store.getAt(idx);
+	},
+	initByUuid: function (uuid) {
+		//TODO: Implement initByUuid, loading from server
+		console.log("should not really reach here");
 	},
 	updateSetting: function (name, setting_type, value, description, value_type, value_type_options) {
 		var val = value;
@@ -181,5 +195,6 @@ Ext.define('MrG.base.ctrl.BaseC', {
 	},
 	log: function () {
 		console.log(...arguments);
-	}
+	},
+	
 });

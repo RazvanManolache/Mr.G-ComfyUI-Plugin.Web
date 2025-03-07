@@ -110,6 +110,7 @@ Ext.define('MrG.base.ctrl.BaseActionGridC', {
 		this.updateSelectedGridItems();
 	},
 	deleteItem: function (item) {
+		var me = this;
 		item.erase({
 			failure: function (record, operation) {
 				Ext.Msg.alert('Error', 'Could not delete gridItem.');
@@ -127,6 +128,10 @@ Ext.define('MrG.base.ctrl.BaseActionGridC', {
 			this.deleteItem(item);
 		}, this);
 	},
+	refreshGrid: function () {
+		var store = this.getGridItemStore();
+        store.load();
+	},
 	deleteGridItem: function () {
 		var me = this;
 		var selectedGridItems = this.get("selectedGridItems");
@@ -134,7 +139,7 @@ Ext.define('MrG.base.ctrl.BaseActionGridC', {
 		Ext.Msg.confirm('Confirmation', 'Are you sure you want to delete?',
 			function (answer) {
 				if (answer == 'yes') {
-					deleteItems(selectedGridItems);
+					me.deleteItems(selectedGridItems);
 				}
 			});
 	},
@@ -147,7 +152,7 @@ Ext.define('MrG.base.ctrl.BaseActionGridC', {
 				Ext.Msg.alert('Error', 'Could not save gridItem.');
 			},
 			callback: function (record, operation, success) {
-				store.reload();
+				store.load();
 			}
 		});
 

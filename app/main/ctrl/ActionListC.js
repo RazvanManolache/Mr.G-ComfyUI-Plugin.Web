@@ -338,6 +338,7 @@ Ext.define('MrG.main.ctrl.ActionListC', {
 					activeNavigationItemChanged: 'onActiveNavigationItemChanged',
 					newGridItem: 'newGridItem',
 					openFileGridItem: 'openFileGridItem',
+					openGridItem: 'openGridItem',
 
 				}
 			}

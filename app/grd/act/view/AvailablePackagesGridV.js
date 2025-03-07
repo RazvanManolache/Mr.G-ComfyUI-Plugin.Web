@@ -22,44 +22,49 @@ Ext.define('MrG.grd.act.view.AvailablePackagesGridV', {
 		{
 			xtype: 'spacer'
 		},
-		{
-			xtype: 'button',
-			iconCls: 'x-fa fa-plus',
-			bind: {
-				disabled: '{disableAddGridItem}'
-			},
-			menu: {
-				items: [
-					{
-						icon: 'x-fa fa-file-medical',
-						handler: 'newGridItem',
-						bind: {
-							text: 'New {typeGrid}'
-						}
-					},
-					{
-						icon: 'x-fa fa-upload',
-						text: 'Import file',
-						handler: 'openFileGridItem',
+		//{
+		//	xtype: 'button',
+		//	iconCls: 'x-fa fa-plus',
+		//	bind: {
+		//		disabled: '{disableAddGridItem}'
+		//	},
+		//	menu: {
+		//		items: [
+		//			//{
+		//			//	icon: 'x-fa fa-file-medical',
+		//			//	handler: 'newGridItem',
+		//			//	bind: {
+		//			//		text: 'New {typeGrid}'
+		//			//	}
+		//			//},
+		//			{
+		//				icon: 'x-fa fa-upload',
+		//				text: 'Install package from file',
+		//				handler: 'openFileGridItem',
 
-					},
-				]
-			}
+		//			},
+		//		]
+		//	}
 
-		},
+		//},
+		//{
+		//	iconCls: 'x-fa fa-pen',
+		//	handler: 'editGridItem',
+		//	bind: {
+		//		disabled: '{disableEditGridItem}'
+		//	}
+		//},
+		//{
+		//	iconCls: 'x-fa fa-trash',
+		//	handler: 'deleteGridItem',
+		//	bind: {
+		//		disabled: '{disableDeleteGridItem}'
+		//	}
+		//},
 		{
-			iconCls: 'x-fa fa-pen',
-			handler: 'editGridItem',
-			bind: {
-				disabled: '{disableEditGridItem}'
-			}
-		},
-		{
-			iconCls: 'x-fa fa-trash',
-			handler: 'deleteGridItem',
-			bind: {
-				disabled: '{disableDeleteGridItem}'
-			}
+			tooltip: 'Refresh',
+			iconCls: 'x-fa fa-sync',
+			handler: 'refreshGrid',
 		},
 		{
 			iconCls: 'x-fa fa-folder-open',

@@ -26,22 +26,21 @@ Ext.define('MrG.grd.act.view.InstalledPackagesGridV', {
 			xtype: 'button',
 			iconCls: 'x-fa fa-plus',
 			bind: {
-				disabled: '{disableAddGridItem}'
+				//disabled: '{disableAddGridItem}'
 			},
 			menu: {
 				items: [
-					{
-						icon: 'x-fa fa-file-medical',
-						handler: 'newGridItem',
-						bind: {
-							text: 'New {typeGrid}'
-						}
-					},
+					//{
+					//	icon: 'x-fa fa-file-medical',
+					//	handler: 'newGridItem',
+					//	bind: {
+					//		text: 'New {typeGrid}'
+					//	}
+					//},
 					{
 						icon: 'x-fa fa-upload',
-						text: 'Import file',
+						text: 'Install package from file',
 						handler: 'openFileGridItem',
-
 					},
 				]
 			}
@@ -62,15 +61,20 @@ Ext.define('MrG.grd.act.view.InstalledPackagesGridV', {
 			}
 		},
 		{
-			iconCls: 'x-fa fa-folder-open',
+			tooltip: 'Refresh',
+			iconCls: 'x-fa fa-sync',
+			handler: 'refreshGrid',
+		},
+		//{
+		//	iconCls: 'x-fa fa-folder-open',
 
-			ui: 'action',
-			handler: 'openGridItem',
-			bind: {
-				text: '{openGridItemText}',
-				disabled: '{disableOpenGridItem}'
-			}
-		}
+		//	ui: 'action',
+		//	handler: 'openGridItem',
+		//	bind: {
+		//		text: '{openGridItemText}',
+		//		disabled: '{disableOpenGridItem}'
+		//	}
+		//}
 	],
 	items: [
 		{

@@ -1,5 +1,6 @@
 ﻿Ext.define('MrG.base.vm.BaseFieldVM', {
     extend: 'MrG.base.vm.BaseContainerVM',
+   
     data: {
         normalFieldTypes: ["STRING", "NUMBER", "BOOLEAN", "SELECT", "INT", "FLOAT"],
         nodeId: -1,
@@ -9,10 +10,11 @@
         _label: '???',
         label_padding: '0 20 0 0',
         label_minWidth: 60,
-
+        alias: '',
         _isInField: true,
         errorMessage: '',
         hidden: false,
+        usedInDescription: false,
         sequence: "fixed",
         _transparentSequence: false,
         hasSequence: false,
@@ -62,8 +64,8 @@
         hideLinkOption: false,
 
        
-        mandatoryFields: ["nodeType", "fieldName", "fieldType", "label", "fieldSelected",
-            "optionSelected", "optionMode", "hidden", "sequence", "value", "hasSequence", "transparentSequence",
+        mandatoryFields: ["nodeType", "fieldName", "fieldType", "label", "fieldSelected", "alias",
+            "optionSelected", "optionMode", "hidden", "usedInDescription", "sequence", "value", "hasSequence", "transparentSequence",
             "linkField", "linkValue", "linkedNodeId", "linkedNodePort", "isInField", "sequenceTotalCnt", "sequencePosition",
             //options for how to view selection grid
             "hideTextColumn", "hideTagsColumn", "hideSelectColumn", "hideRatingColumn", "hidePathColumn", "hideNameColumn", "hideImageColumn",
@@ -309,18 +311,28 @@
         },
         label_formatted: function (get) {
             var label = get('label');
+            var alias = get('alias');
+            var hidden = get("hidden");
+            var usedInDescription = get("usedInDescription");
+            var linkField = get("linkField");
+            var isInField = get("isInField");
             label = replaceAll(label, '_', ' ');
             label = titleCase(label);
-            if (get("hidden")) label = "<em>" + label + "</em>"
-            if (get("linkField")) {
-                if (get("isInField")) {
-                    label = "→ " + label;
+            var lbl = label;
+            if (alias) {
+                lbl = alias + " ("+label+")";
+            }
+            if (hidden) lbl = "<em>" + lbl + "</em>"
+            if (usedInDescription) lbl = "<strong>" + lbl + "</strong>";
+            if (linkField) {
+                if (isInField) {
+                    lbl = "→ " + lbl;
                 } else {
-                    label = label + " →";
+                    lbl = lbl + " →";
                 }
 
             }
-            return label;
+            return lbl;
         },
         fieldHidden: function (get) {
             if (get("hiddenByNode")) return true;

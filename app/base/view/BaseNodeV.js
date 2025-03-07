@@ -29,12 +29,67 @@ Ext.define('MrG.base.view.BaseNodeV', {
 		type: 'vbox',
 
 	},
+	
+	tools: [{
+		type: 'gear',
+		bind: {
+			hidden: '{hideConfigure || readOnlyWorkflow}'
+		},
+		tooltip: 'Options',
+		handler: function (panel, toolEl, event) {
+			panel.getController().configureNode();
+			const createMenuItem = (text, iconCls, handlerName, bindConfig, separator) => ({
+				text,
+				iconCls,
+				separator: separator,
+				handler: function (item) {
+					panel.getController()[handlerName]();
+				},
+				bind: bindConfig
+			});
+
+			Ext.create('Ext.menu.Menu', {
+				viewModel: panel.getViewModel(),
+				items: [
+					//TODO: implement rename
+					createMenuItem('Set alias', 'x-fa fa-pen', 'setNodeAlias', false),					
+					createMenuItem('Add node above', 'x-fa fa-arrow-up', 'addNodeAbove', { hidden: '{hideAddNodeAbove}' }, true),
+					createMenuItem('Add node below', 'x-fa fa-arrow-down', 'addNodeBelow', { hidden: '{hideAddNodeBelow}' }, false),
+					createMenuItem('Move up node', 'x-fa fa-angle-up', 'moveUp', { hidden: '{hideMoveDown}' }, true),
+					createMenuItem('Move down node', 'x-fa fa-angle-down', 'moveDown', { hidden: '{hideMoveUp}' }, false),
+					
+					{
+						separator: true,
+						xtype: 'menucheckitem',
+						bind: {
+							iconCls: 'x-fa fa-eye{hideNodeCls}',
+							text: '{hideNodeText}',
+							checked: '{nodeHidden}',
+							hidden: '{!canHideNodes}'
+						}
+					},	
+					createMenuItem('Remove node', 'x-fa fa-times', 'closeNode', { hidden: '{hideNodeClose}' }, true),
+					createMenuItem('Load defaults for node', 'x-fa fa-circle-notch', 'loadDefaultLayout', { hidden: '{hideLoadDefaultLayout}' }, true),
+					createMenuItem('Set layout as default', 'x-fa fa-compact-disc', 'setLayoutAsDefault', { hidden: '{hideSetLayoutAsDefault}' }, false),
+
+					
+				]
+			}).showBy(toolEl);
+		}
+	}],
 	isNode: true,
+	header: {
+		bind: {
+			hidden: '{hideTitles}',
+			title: '{titlePanel}',
+			tooltip: '{comfyCategory}',
+		}
+	},
 	bind: {
 		bodyPadding: '{nodeBodyPadding}',
-		//title: '{titlePanel}',
 		hidden: '{hideNode}',
-		border: '{borderShow}'
+		border: '{borderShow}',
+		collapsed: '{collapsedPanel}'
 	},
 	style: 'border: 5px solid red;',
 	overflowY: 'scroll',
@@ -52,123 +107,9 @@ Ext.define('MrG.base.view.BaseNodeV', {
 	controller: {
 		xclass: 'MrG.base.ctrl.BaseNodeC'
 	},
+	collapsible: 'top',
 	
-	tbar: {
-		bind: {
-			hidden: '{hideTitles}'
-		},
-		items: [
-			{
-				xtype: 'label',
-				bind: {
-					tooltip: '{comfyCategory}',
-					html: '{titlePanel}'
-				},
-			},
-			
-			{
-				xtype: 'spacer'
-			},
-			
-			
-			
-			{
-				iconCls: 'x-fa fa-gears',
-				handler: 'configureNode',
-				tooltip: 'Options',
-				
-				bind: {
-					hidden: '{hideConfigure || readOnlyWorkflow}'
-				},
-				menu: {
-					anchor: true,
-					items: [
-						{
-							text: 'Rename',
-							iconCls: 'x-fa fa-pen',
-						},
-						{
-							separator: true,
-							iconCls: 'x-fa fa-arrow-up',
-							text: 'Add node above',
-							handler: 'addNodeAbove',
-							bind: {
-								hidden: '{hideAddNodeAbove}'
-							}
-						},
-						{
-							
-							iconCls: 'x-fa fa-arrow-down',
-							text: 'Add node below',
-							handler: 'addNodeBelow',
-							bind: {
-								hidden: '{hideAddNodeBelow}'
-							}
-						},
-										
-						{
-							separator: true,
-							iconCls: 'x-fa fa-angle-up',
-							text: 'Move up node',
-							handler: 'moveUp',
-							bind: {
-								hidden: '{hideMoveDown}'
-							}
-						},
-						{
-							
-							iconCls: 'x-fa fa-angle-down',
-							text: 'Move down node',
-							handler: 'moveDown',
-							bind: {
-								hidden: '{hideMoveUp}'
-							}
-						},
-						{
-							separator: true,
-							xtype: 'menucheckitem',
-							bind: {
-								iconCls: 'x-fa fa-eye{hideNodeCls}',
-								text: '{hideNodeText}',
-								checked: '{nodeHidden}',
-								hidden: '{!canHideNodes}'
-							}
-						},						
-						{
-							separator: true,
-							iconCls: 'x-fa fa-times',
-							text: 'Remove node',
-							handler: 'closeNode',
-							bind: {
-								hidden: '{hideNodeClose}'
-							}
-						},
-						{
-							separator: true,
-							iconCls: 'x-fa fa-circle-notch',
-							text: 'Load defaults for node',
-							handler: 'loadDefaultLayout',
-							bind: {
-								hidden: '{hideLoadDefaultLayout}'
-							}
-						},
-						{
-							iconCls: 'x-fa fa-compact-disc',
-							text: 'Set layout as default',
-							handler: 'setLayoutAsDefault',
-							bind: {
-								hidden: '{hideSetLayoutAsDefault}'
-							}
-						},
-						
-					]
-				}
-			},
-			
-			
-		]
-	},
-
+	
 
 	
 	items: [

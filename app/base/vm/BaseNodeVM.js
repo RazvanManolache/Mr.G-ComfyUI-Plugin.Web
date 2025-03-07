@@ -6,16 +6,27 @@ Ext.define('MrG.base.vm.BaseNodeVM', {
         id: -1,
         className: '',
         order: 0,
+        alias: '',
         fieldReferences: [], 
         nodeHidden: false,
         nodeHiddenSearch: false,
         selectedNode: false,
         comfyCategory: null,
-
+        collapsed: false,
         hideLoadDefaultLayout: false,
         hideSetLayoutAsDefault: false,
     },
     formulas: {
+        collapsedPanel: {
+
+            //TODO: when title hidden they should no longer be collapsed
+            get: function (get) {
+                return get('collapsed');
+            },
+            set: function (value) {
+                this.set('collapsed', value);
+            }
+        },
         borderShow: {
             get: function (get) {
                 var selected = get('selectedNode');
@@ -57,7 +68,11 @@ Ext.define('MrG.base.vm.BaseNodeVM', {
         titlePanel: {
             get: function (get) {
                 var title = get('title');
+                var alias = get('alias');
                 var id = get('id');
+                if (alias) {
+                    return alias + ' - ' + title + ' (' + id+ ')';
+                } 
                 return title + ' (' + id+ ')';
             }
         }

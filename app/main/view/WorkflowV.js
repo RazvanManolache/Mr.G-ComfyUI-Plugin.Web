@@ -1,7 +1,7 @@
 ﻿Ext.define('MrG.main.view.WorkflowV', {	
 	extend: "MrG.base.view.BasePanelV",
 	width: '100%',
-	height: '80%',
+	height: '100%',
 	mrgReference: 'workflowV',
 	autoSize: true,
 	layout: 'vbox',
@@ -253,6 +253,40 @@
 							},
 							{
 								separator: true,
+								xtype: 'menucheckitem',
+								text: 'Autosave after run',
+								labelWidth: 'auto',
+								bind: {
+									checked: '{autoSaveAfterRun}',
+								},
+							},
+							{
+								xtype: 'menucheckitem',
+								text: 'Autosave',
+								labelWidth: 'auto',
+								bind: {
+									checked: '{autoSave}',
+								},
+							},
+							{
+								separator: true,
+								xtype: 'menucheckitem',
+								text: 'Use all modified fields for description of output',
+								labelWidth: 'auto',
+								bind: {
+									checked: '{modifiedFieldsOutputDescription}',
+								},
+							},
+							{
+								xtype: 'menucheckitem',
+								text: 'Use all visible fields for description of output',
+								labelWidth: 'auto',
+								bind: {
+									checked: '{visibleFieldsOutputDescription}',
+								},
+							},
+							{
+								separator: true,
 								iconCls: 'x-fa fa-link',
 								text: 'Autolink nodes',
 								bind: {
@@ -276,7 +310,7 @@
 								bind: {
 									checked: '{showDescription}',
 								},
-							},							
+							},
 							{
 								separator: true,
 								xtype: 'menucheckitem',
@@ -604,6 +638,7 @@
 
 		},
 		{
+			//TODO: make it scroll properly
 			xtype: 'container',
 			platformConfig: {
 				desktop: {
@@ -613,26 +648,24 @@
 					layout: 'vbox',
 				}
 			},
-			
-			flex:1,
+			height:'100%',
 			items: [
 				{
 					xclass: "Ext.Panel",
-					flex: 4,
+					flex: 1,
 					reference: 'workflowView',
-					collapsible: false,
-					height: '100%',
 					dock: 'left',
-					scrollable: 'y',
-					width: '100%',
-					autoSize: true,
+					scrollable: true, 
+					height: '100%',
 					bind: {
 						hidden: '{hideComfy}'
-					}
+					},
+
 					//TODO: how to resize these well
 				},
 
 				{
+					height: '100%',
 					xclass: "Ext.Panel",
 					hideMode: 'visibility',
 					reference: 'comfyView',
@@ -665,9 +698,8 @@
 							dock: 'bottom',
 						}
 					},
-					
+					flex:1,
 					scrollable: 'y',
-					autoSize: true,
 					layout: 'vbox',
 					listeners: {
 						initialize: function (cmp) {
