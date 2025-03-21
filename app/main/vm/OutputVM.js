@@ -1,5 +1,6 @@
-Ext.define('MrG.grd.act.vm.OutputVM', {
+Ext.define('MrG.main.vm.OutputVM', {
     extend: 'MrG.base.vm.BasePanelVM',
     data: {
+        record: null,
     }
 });

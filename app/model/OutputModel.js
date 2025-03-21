@@ -22,7 +22,14 @@ Ext.define('MrG.model.OutputModel', {
         { name: 'create_date', type: 'date', allowNull: false },
         { name: 'rating', type: 'int', allowNull: false },
         { name: 'request_description', type: 'string' },
+        { name: 'workflow_name', type: 'string' },
         { name: 'step_description', type: 'string' },
+        {
+            name: 'name',
+            calculate: function (data) {
+                return data.workflow_name + " - " + formatShortDate(data.create_date)
+            }
+        },
         {
             name: 'description',
             calculate: function (data) {
@@ -71,7 +78,35 @@ Ext.define('MrG.model.OutputModel', {
             }
         },
         {
-            name: 'icon',
+            name: 'sourceUrl',
+            calculate: function (data) {
+                switch (data.output_type) {
+                    case "images":
+                        if (data.value) {
+                            var res = JSON.parse(data.value);
+                            if (res.filename)
+                                return '/view?filename=' + res.filename + '&subfolder=' + res.subfolder + '&type=output';
+                        }
+                        return "";
+                    default:
+                        return "";
+                }
+            }
+        },
+        {
+            name: 'isImage',
+            calculate: function (data) {
+                return data.output_type === "images";
+            }
+        },
+        {
+            name: 'isText',
+            calculate: function (data) {
+                return data.output_type === "text";
+            }
+        },
+        {
+            name: 'iconUrl',
             calculate: function (data) {
                 switch (data.output_type) {
                     case "images":

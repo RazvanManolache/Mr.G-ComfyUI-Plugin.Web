@@ -40,6 +40,7 @@ Ext.define('MrG.main.ctrl.LayoutTabPanelC', {
 			listeners: {
 				openWorkflow: 'openWorkflow',
 				openItem: 'openItem',
+				openWorkflowByUuid: 'openWorkflowByUuid'
 			}
 		});
 		if (focusOnNewTab)
@@ -130,6 +131,7 @@ Ext.define('MrG.main.ctrl.LayoutTabPanelC', {
 			scollable: true,
 			listeners: {
 				openWorkflow: 'openWorkflow',
+				
 				openItem: 'openItem',
 			}
 		});

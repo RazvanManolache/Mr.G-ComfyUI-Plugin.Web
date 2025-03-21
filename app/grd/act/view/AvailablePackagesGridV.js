@@ -145,14 +145,12 @@ Ext.define('MrG.grd.act.view.AvailablePackagesGridV', {
 							text: 'Tags',
 							dataIndex: 'tags',
 						},
-
 						{
-							text: 'Enabled',
-							xtype: 'checkcolumn',
-							headerCheckbox: true,
-							dataIndex: 'enabled',
-							readOnly: true
-						}
+							xtype: 'textcolumn',
+							text: 'Repository',
+							dataIndex: 'repository',
+							flex: 1
+						},
 					],
 					plugins: {
 

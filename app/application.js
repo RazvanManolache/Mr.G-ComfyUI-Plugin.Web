@@ -30,6 +30,10 @@ function startUI() {
 			'MrG.main.ctrl.ActionPanelC',
 			'MrG.main.vm.ActionPanelVM',
 
+			'MrG.main.view.InstallPackageV',
+			'MrG.main.ctrl.InstallPackageC',
+			'MrG.main.vm.InstallPackageVM',
+
 			
 			'MrG.dialog.view.SelectNodeV',
 			'MrG.dialog.ctrl.SelectNodeC',
@@ -94,6 +98,9 @@ function startUI() {
 			'MrG.main.ctrl.QueueC',
 			'MrG.main.vm.QueueVM',
 			'MrG.main.view.QueueV',
+			'MrG.main.ctrl.OutputC',
+			'MrG.main.vm.OutputVM',
+			'MrG.main.view.OutputV',
 
 
 			'MrG.dialog.view.SelectWorkflowV',

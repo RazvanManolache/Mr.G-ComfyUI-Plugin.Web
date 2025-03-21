@@ -4,8 +4,11 @@ Ext.define('MrG.grd.act.ctrl.OutputGridC', {
     init: function () {
         var me = this;       
         me.callParent(arguments);
-        this.vm.bind('{selectionMode}', function (value) {
-            this.lookup('gridItemList').setSelectable(value);
+        this.vm.bind('{multiSelect}', function (value) {
+            if (value) {
+                this.lookup('gridItemList').setSelectable("multi");
+            }
+            this.lookup('gridItemList').setSelectable("single");
         }, this);
     },
     downloadGridItem: function () {

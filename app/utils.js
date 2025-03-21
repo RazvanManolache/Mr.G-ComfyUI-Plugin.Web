@@ -7,6 +7,17 @@ isObject = function (obj) {
         obj !== null
 }
 
+function formatShortDate(date) {
+    if(!date) return "";
+    const d = date.getDate().toString().padStart(2, '0'); // Day (2 digits)
+    const m = (date.getMonth() + 1).toString().padStart(2, '0'); // Month (2 digits, zero-based)
+    const Y = date.getFullYear(); // Full year (4 digits)
+    const H = date.getHours().toString().padStart(2, '0'); // Hours (2 digits)
+    const i = date.getMinutes().toString().padStart(2, '0'); // Minutes (2 digits)
+
+    return `${d}/${m}/${Y} ${H}:${i}`;
+}
+
 function isValidURL(url) {
     try {
         // Use the URL constructor to parse the string

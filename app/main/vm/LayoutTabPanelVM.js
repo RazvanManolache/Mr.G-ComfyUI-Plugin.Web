@@ -14,32 +14,21 @@ Ext.define('MrG.main.vm.LayoutTabPanelVM', {
         autogeneratePresetDescriptions: true,
         extraMenuItems: [
             {
-                title: 'Output',
-                items: [
-                    {
-                        title: 'Queue',
-                        xclass: 'MrG.grd.act.view.QueueGridV',
-
-                        store: 'MrG.store.BatchRequestStore',
-                        storeName: 'queueStore',
-
-                        itemView: 'MrG.main.view.QueueV',
-                        itemTitle: 'Queue',
-                    },
-                    {
-                        title: 'Outputs',
-                        xclass: 'MrG.grd.act.view.OutputGridV',
-
-                        store: 'MrG.store.OutputStore',
-                        storeName: 'outputStore',
-                    },
-                    
-                ]
-            },
-            {
                 title: 'Packages',
                 items: [
-                    
+                    {
+                        title: 'Installed packages',
+                        xclass: 'MrG.grd.act.view.InstalledPackagesGridV',
+
+                        store: 'MrG.store.InstalledPackagesStore',
+                        storeName: 'installedPackagesStore',
+
+                        extension: 'mrgp',
+                        model: 'MrG.model.PackageModel',
+
+                        itemView: 'MrG.main.view.InstallPackageV',
+                        itemTitle: 'Install package',
+                    },
                     {
                         title: 'Repositories',
                         xclass: 'MrG.grd.act.view.PackageRepositoriesGridV',
@@ -58,18 +47,44 @@ Ext.define('MrG.main.vm.LayoutTabPanelVM', {
 
                         store: 'MrG.store.AvailablePackagesStore',
                         storeName: 'availablePackagesStore',
-                    },
-                    {
-                        title: 'Installed packages',
-                        xclass: 'MrG.grd.act.view.InstalledPackagesGridV',
 
-                        store: 'MrG.store.InstalledPackagesStore',
-                        storeName: 'installedPackagesStore',
+                        itemView: 'MrG.main.view.InstallPackageV',
+                        itemTitle: 'Install package',
+                        
+                    },
+                  
+
+
+                ]
+            },
+            {
+                title: 'Output',
+                items: [
+                    {
+                        title: 'Outputs',
+                        xclass: 'MrG.grd.act.view.OutputGridV',
+
+                        store: 'MrG.store.OutputStore',
+                        storeName: 'outputStore',
+
+                        itemView: 'MrG.main.view.OutputV',
+                        itemTitle: 'Output',
                     },
                     
+                    {
+                        title: 'Queue',
+                        xclass: 'MrG.grd.act.view.QueueGridV',
+
+                        store: 'MrG.store.BatchRequestStore',
+                        storeName: 'queueStore',
+
+                        itemView: 'MrG.main.view.QueueV',
+                        itemTitle: 'Queue',
+                    },
                     
                 ]
             },
+          
             {
                 title: 'Settings',
                 items: [

@@ -76,7 +76,16 @@
 			iconCls: 'x-fa fa-sync',
 			handler: 'refreshGrid',
 		},
-		
+		{
+			iconCls: 'x-fa fa-folder-open',
+
+			ui: 'action',
+			handler: 'openGridItem',
+			bind: {
+				text: '{openGridItemText}',
+				disabled: '{disableOpenGridItem}',
+			}
+		}
 	],
 	items: [
 		{
@@ -179,7 +188,7 @@
 					{
 						xtype: 'image', // Use xtype 'image' instead of xclass
 						bind: {
-							src: '{record.icon}'
+							src: '{record.iconUrl}'
 						},
 						width: 150,
 						height: 150,
@@ -246,16 +255,19 @@
 		{
 
 			xtype: 'panel',
+			bind: {
+				hidden: '{!somethingSelected}'
+			},
 			title: 'Details',
 			header: true,
 			reference: 'editGridItemForm',
-
+			titleCollapse: true,
 			dock: 'bottom',
-			headerPosition: 'top',
 			platformConfig: {
 				desktop: {
+					height: 400,
 					collapsible: {
-						collapsed: true,
+						collapsed: false,
 						direction: 'bottom'
 					},
 					resizable: {
@@ -310,11 +322,33 @@
 				},
 				{
 					xtype: 'panel',
+					bind: {
+						hidden: '{!showPreview}'
+					},
 					flex: 1,
+					layout: 'vbox',
 					resizable: {
 						split: true,
 						edges: 'west'
 					},
+					items: [
+						{
+							xtype: 'image',
+							height: '100%',
+							width: '100%',
+							bind: {
+								src: '{editedGridItem.sourceUrl}',
+								hidden: '{!editedGridItem.isImage}'
+							},
+							style: {
+								objectFit: 'contain', // Ensure the image fits within bounds
+								margin: '10px auto'
+							}
+						}
+						
+
+					]
+
 				}
 			
 				
