@@ -1,6 +1,6 @@
 ﻿Ext.define('MrG.base.view.BaseFieldV', {
 	extend: 'MrG.base.view.BaseContainerV',
-	layout: 'hbox',
+	layout: 'vbox',
 	listeners: {
 		beforedestroy: 'onFieldDestroy'
 	},
@@ -70,62 +70,78 @@
 	},
 	items: [
 		{
-			xclass: 'Ext.field.Checkbox',
-			bind: {
-				hidden: '{!fieldsSelection || linkField}',
-				checked: '{fieldSelected}'
-			}
-		},
-		{
-			flex: 1,
-			xclass: 'Ext.Label',
-			reference: 'label',
-			style: 'display:flex;align-items:center;',
-			listeners: {
-				click: {
-					element: 'element', 
-					fn: 'onLabelClick'
-				},
-				
-			},
-			bind: {
-				html: '{label_formatted}',
-				padding: '{label_padding}',
-				minWidth: '{label_minWidth}'
-			}
-		},
-		{
-			xclass: 'Ext.Container',
-			flex: 5,
+			xtype: 'container',
+			layout: 'hbox',
 			items: [
 				{
-					xtype: 'label',
-					style: "color:red;",
+					xclass: 'Ext.field.Checkbox',
 					bind: {
-                        html: '{errorMessage}',
-						hidden: '{!errorMessage}'
-                    }
+						hidden: '{!fieldsSelection || linkField}',
+						checked: '{fieldSelected}'
+					}
+				},
+				{
+					flex: 1,
+					xclass: 'Ext.Label',
+					reference: 'label',
+					style: 'display:flex;align-items:center;align-self:center',
+					listeners: {
+						click: {
+							element: 'element',
+							fn: 'onLabelClick'
+						},
+
+					},
+					bind: {
+						html: '{label_formatted}',
+						padding: '{label_padding}',
+						minWidth: '{label_minWidth}'
+					}
 				},
 				{
 					xclass: 'Ext.Container',
-					reference: 'controlContainer',
+					flex: 5,
+					items: [
+						{
+							xtype: 'label',
+							style: "color:red;display:flex;align-items:center;align-self:center",
+							bind: {
+								html: '{errorMessage}',
+								hidden: '{!errorMessage}'
+							}
+						},
+						{
+							xclass: 'Ext.Container',
+							style: 'display:flex;align-items:center;align-self:center;height:100%',
+							reference: 'controlContainer',
+						},
+					]
 				},
+
+				{
+					bind: {
+						hidden: '{hideModifying || readOnlyWorkflow}'
+					},
+					reference: 'optionsMenuBtn',
+					xtype: 'button',
+					iconCls: 'x-fa fa-gear',
+					platformConfig: {
+						desktop: {
+							menu: []
+						},
+					}
+
+				}
 			]
 		},
-		
 		{
+			//make italic, have a margin, and be hidden if there is no description
+			xtype: 'label',
+			style: "font-style: italic; margin: 5px 10px;",
 			bind: {
-				hidden: '{hideModifying || readOnlyWorkflow}'
-			},
-			reference: 'optionsMenuBtn',
-			xtype: 'button',
-			iconCls: 'x-fa fa-gear',
-			platformConfig: {
-				desktop: {
-					menu: []
-				},
+				html: '{description}',
+				hidden: '{!description}'
 			}
-			
 		}
 	],
 })

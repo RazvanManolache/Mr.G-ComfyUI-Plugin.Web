@@ -158,6 +158,7 @@ blocksInterpreter = {
 		})
 		return ar;
 	},
+	
 	createUIStore: function (nodeType, fieldname, field_details, type) {
 		var typeStore = MrG.store.SelectTypeStore;
 		var store_nm = fieldname;
@@ -182,6 +183,7 @@ blocksInterpreter = {
 		var storename = 'MrG.store.combo.singleton.' + store_nm;
 		if (!MrG || !MrG.store || !MrG.store.combo || !MrG.store.combo.singleton || !MrG.store.combo.singleton[store_nm]) {
 			//console.log(storename);
+			
 			Ext.define(storename, {
 				extend: 'MrG.store.SelectListStore',
 				singleton: true,
@@ -233,7 +235,6 @@ blocksInterpreter = {
 				fieldValueChanged: 'fieldValueChanged',
 				sequenceChanged: 'fieldSequenceChanged',
 				linkFieldStateChanged: 'linkFieldStateChanged',
-
 				fieldLinkAdded: 'fieldLinkAdded',
 				fieldLinkRemoved: 'fieldLinkRemoved',
 				fieldLinkInitialized: 'fieldLinkInitialized',

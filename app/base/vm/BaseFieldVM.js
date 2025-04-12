@@ -18,6 +18,7 @@
         sequence: "fixed",
         _transparentSequence: false,
         hasSequence: false,
+        description: null,
 
         optionSelected: 'Simple',
         optionMode: 'Basic',
@@ -64,7 +65,7 @@
         hideLinkOption: false,
 
        
-        mandatoryFields: ["nodeType", "fieldName", "fieldType", "label", "fieldSelected", "alias",
+        mandatoryFields: ["nodeType", "fieldName", "fieldType", "label", "fieldSelected", "alias", "description",
             "optionSelected", "optionMode", "hidden", "usedInDescription", "sequence", "value", "hasSequence", "transparentSequence",
             "linkField", "linkValue", "linkedNodeId", "linkedNodePort", "isInField", "sequenceTotalCnt", "sequencePosition",
             //options for how to view selection grid
@@ -76,6 +77,7 @@
        
         globalDataStore: null,
         _sequencePosition: -1,
+        isValid: true,
     },
     stores: {
         

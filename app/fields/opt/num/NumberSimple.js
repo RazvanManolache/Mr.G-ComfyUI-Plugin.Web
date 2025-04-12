@@ -5,7 +5,16 @@ Ext.define('MrG.fields.opt.num.NumberSimple', {
 		initialize: {
 			fn: 'onNumberInitialize'
 		},
-		
+		change: function (field) {
+			var vm = null;
+			var parent = field;
+			while(parent && !vm) {
+                vm = parent.getViewModel();
+                parent = parent.up();
+            }
+			if(vm)
+				vm.set('isValid', field.isValid());
+		}
 	},	
 	bind: {
 		readOnly:'{readOnlyWorkflow}',

@@ -32,6 +32,9 @@ Ext.define('MrG.fields.ctrl.SelectionC', {
 	},
 	filteredItemsChanged: function () {
 		var globalDataStore = this.get("globalDataStore");
+		if(!globalDataStore) {
+			return;
+		}
 		var negateList = this.get("negateList");		
 		var selectListStore = this.get("selectListStore")
 		var rows = selectListStore.queryBy(a => true);

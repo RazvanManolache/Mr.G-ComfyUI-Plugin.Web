@@ -7,6 +7,29 @@ isObject = function (obj) {
         obj !== null
 }
 
+function formatSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    let units = ['KB', 'MB', 'GB', 'TB'];
+    let i = -1;
+    do {
+        bytes /= 1024;
+        i++;
+    } while (bytes >= 1024 && i < units.length - 1);
+    return bytes.toFixed(2) + ' ' + units[i];
+}
+
+function deepEqual(a, b) {
+    if (Object.is(a, b)) return true; // Strict equality, handles NaN correctly
+
+    if (typeof a !== "object" || typeof b !== "object" || a === null || b === null)
+        return false; // Primitive values, different objects, or null
+
+    let keysA = Object.keys(a), keysB = Object.keys(b);
+    if (keysA.length !== keysB.length) return false;
+
+    return keysA.every(key => keysB.includes(key) && deepEqual(a[key], b[key]));
+}
+
 function formatShortDate(date) {
     if(!date) return "";
     const d = date.getDate().toString().padStart(2, '0'); // Day (2 digits)

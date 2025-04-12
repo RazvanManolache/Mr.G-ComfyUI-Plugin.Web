@@ -114,6 +114,9 @@ Ext.define('MrG.base.ctrl.BaseFieldC', {
 		
 	},
 	fieldChanged: function (newValue, oldValue, obj) {
+		//if newValue is array, compare to oldValue
+		if (deepEqual(newValue, oldValue)) return;
+		
 		this.set("errorMessage", "");
 		var fieldValues = this.getFieldValues(["sequenceTotalCnt", "sequencePosition"]);
 		this.fireViewEventArgs("fieldChanged", [this, fieldValues, false]);
@@ -616,7 +619,8 @@ Ext.define('MrG.base.ctrl.BaseFieldC', {
 			debugger;
 		}
 	},
-	onSequenceChange: function () {
+	onSequenceChange: function (newValue, oldValue, obj) {
+		if (deepEqual(newValue, oldValue)) return;
 		if (!this.get("linkField")) {
 			this.fireViewEventArgs("sequenceChanged", [this.getSequenceObject()]);
 		}
