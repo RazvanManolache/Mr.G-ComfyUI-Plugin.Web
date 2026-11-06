@@ -1,2 +1,7 @@
-﻿
+ï»¿
 app/bundle.js
+
+/dist/
+/__pycache__/
+*.pyc
+*.bec
